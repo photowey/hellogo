@@ -1,9 +1,9 @@
 package main
 
 import (
-    "fmt"
+	"github.com/hellogo/cmd"
 )
 
 func main() {
-    fmt.Println("Hello Go!")
+	cmd.Run()
 }

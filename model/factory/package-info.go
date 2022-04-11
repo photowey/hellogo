@@ -1,5 +1,5 @@
 package factory
 
 /**
- * domain factory
+ * model factory
  */

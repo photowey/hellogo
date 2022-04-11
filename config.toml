@@ -1,0 +1,35 @@
+# The hellogo project default config.
+
+env = "devv"
+host = "192.168.1.101"
+
+[log]
+level = "info"
+path = "logs"
+file_name = "hellogo.out"
+max_size = 5
+max_age_day = 90
+compress_enabled = false
+stdout_enabled = true
+
+[database]
+driver = "mysql"
+host = "192.168.1.101"
+port = 3307
+database = "hellogo"
+username = "root"
+password = "root"
+
+[redis]
+host = "192.168.1.101"
+port = 6379
+password = ""
+database = 0
+
+[rabbitmq]
+host = "192.168.1.101"
+port = 5672
+user = "root"
+password = "root"
+vhosts = "root_vhosts"
+
