@@ -16,7 +16,7 @@ func Run(conf string) error {
 		conf = "config.toml"
 	}
 
-	if err := config.Load(conf); err != nil {
+	if err := config.LoadToml(conf); err != nil {
 		return fmt.Errorf("load the app config error:%w", err)
 	}
 
