@@ -23,23 +23,52 @@ const (
 // ---------------------------------------------------------------- var
 
 var (
-	defaultSession RedizSession
+	DefaultSession RedizSession // 默认的: {@code RedisSession} 空实例
 )
 
 var (
-	protocol      = "tcp"
-	auth          = "AUTH"
-	emptyString   = ""
+	protocol      = "tcp"  // {@code Redis} 协议
+	auth          = "AUTH" // {@code Redis} 认证
+	emptyString   = ""     // 空字符串
 	defaultString = emptyString
 )
 
 // ---------------------------------------------------------------- init
 
 func init() {
-	defaultSession = RedizSession{}
+	DefaultSession = RedizSession{}
 }
 
-// ---------------------------------------------------------------- redis connection factory
+// ---------------------------------------------------------------- redis connection-factory interface
+
+// ConnectionFactory {@code Redis} 连接工厂抽象接口
+type ConnectionFactory interface {
+	OpenConnect() (redis.Conn, error) // 开启连接
+}
+
+// ---------------------------------------------------------------- redis session interface
+
+// Session {@code Redis} 连接会话抽象接口
+type Session interface {
+	Borrow() redis.Conn                                      // 获取连接
+	Exec(command string, args ...any) (reply any, err error) // 执行命令
+	Release()                                                // 释放连接
+}
+
+// ---------------------------------------------------------------- redis session interface
+
+// Template {@code Redis} 操作模板抽象接口
+type Template interface {
+	OpenSession() (RedizSession, error)                        //开启会话
+	Set(key string, value string) error                        // 设置值
+	Setex(key string, value string, expireSeconds int64) error // 设置过期值
+	Get(key string) (string, error)                            // 获取值
+	LPush(key string, value string) error                      // 左 Push
+	RPush(key string, value string) error                      // 右 Push
+	LPop(key string) (string, error)                           // 左 弹出
+	RPop(key string) (string, error)                           // 右弹出
+	Delete(key string) error                                   // 删除
+}
 
 // RedizConnectionFactory 简单的 {@code Redis} 连接工厂
 type RedizConnectionFactory struct {
@@ -126,7 +155,7 @@ func (rt RedizTemplate) NewRedizTemplate(address string, password string, option
 func (rt RedizTemplate) OpenSession() (RedizSession, error) {
 	conn, err := rt.factory.OpenConnect()
 	if err != nil {
-		return defaultSession, err
+		return DefaultSession, err
 	}
 
 	return RedizSession{conn}, nil
