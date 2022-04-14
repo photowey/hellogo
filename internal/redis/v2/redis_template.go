@@ -78,9 +78,13 @@ type RedizConnectionFactory struct {
 	options  []rediz.DialOption // {@code Redis} 选项配置
 }
 
+//
 // NewConnectionFactory 创建一个连接工厂
+//
 // 为什么要将连接工厂的创建暴露出去?
+//
 // 1.{@code RedizTemplate} 提供的命令操作还不完善, 这样给外界一个机会 -> 手动创建连接工厂, 然后开启连接
+//
 // 2.⭐⭐ 不推荐:开发者使用该方式
 func NewConnectionFactory(address string, password string, options ...rediz.DialOption) RedizConnectionFactory {
 	return RedizConnectionFactory{
@@ -92,6 +96,7 @@ func NewConnectionFactory(address string, password string, options ...rediz.Dial
 }
 
 // OpenConnect 连接工厂创建连接
+//
 // 为外界提供一个机会: 通过连接工厂创建 {@code Redis} 连接
 func (factory RedizConnectionFactory) OpenConnect() (rediz.Conn, error) {
 	conn, err := rediz.Dial(factory.protocol, factory.address, factory.options...)
@@ -138,6 +143,7 @@ func (rs RedizSession) Release() {
 // ---------------------------------------------------------------- rediz template
 
 // RedizTemplate 操作 {@code Redis} 的模板
+//
 // {@code RedizTemplate} 避免采用包名作为结构体前置
 type RedizTemplate struct {
 	factory *RedizConnectionFactory
