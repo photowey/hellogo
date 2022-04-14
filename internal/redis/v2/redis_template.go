@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/gomodule/redigo/redis"
+	rediz "github.com/gomodule/redigo/redis"
 )
 
 // ---------------------------------------------------------------- const
@@ -23,7 +23,7 @@ const (
 // ---------------------------------------------------------------- var
 
 var (
-	DefaultSession RedizSession // 默认的: {@code RedisSession} 空实例
+	DefaultSession RedizSession // 默认的: {@code redizSession} 空实例
 )
 
 var (
@@ -39,23 +39,23 @@ func init() {
 	DefaultSession = RedizSession{}
 }
 
-// ---------------------------------------------------------------- redis connection-factory interface
+// ---------------------------------------------------------------- rediz connection-factory interface
 
 // ConnectionFactory {@code Redis} 连接工厂抽象接口
 type ConnectionFactory interface {
-	OpenConnect() (redis.Conn, error) // 开启连接
+	OpenConnect() (rediz.Conn, error) // 开启连接
 }
 
-// ---------------------------------------------------------------- redis session interface
+// ---------------------------------------------------------------- rediz session interface
 
 // Session {@code Redis} 连接会话抽象接口
 type Session interface {
-	Borrow() redis.Conn                                      // 获取连接
+	Borrow() rediz.Conn                                      // 获取连接
 	Exec(command string, args ...any) (reply any, err error) // 执行命令
 	Release()                                                // 释放连接
 }
 
-// ---------------------------------------------------------------- redis session interface
+// ---------------------------------------------------------------- rediz session interface
 
 // Template {@code Redis} 操作模板抽象接口
 type Template interface {
@@ -75,14 +75,14 @@ type RedizConnectionFactory struct {
 	protocol string
 	address  string             // {@code Redis} 连接地址 -> 主机:端口
 	password string             // {@code Redis} 密码
-	options  []redis.DialOption // {@code Redis} 选项配置
+	options  []rediz.DialOption // {@code Redis} 选项配置
 }
 
 // NewConnectionFactory 创建一个连接工厂
 // 为什么要将连接工厂的创建暴露出去?
 // 1.{@code RedizTemplate} 提供的命令操作还不完善, 这样给外界一个机会 -> 手动创建连接工厂, 然后开启连接
 // 2.⭐⭐ 不推荐:开发者使用该方式
-func NewConnectionFactory(address string, password string, options ...redis.DialOption) RedizConnectionFactory {
+func NewConnectionFactory(address string, password string, options ...rediz.DialOption) RedizConnectionFactory {
 	return RedizConnectionFactory{
 		protocol: protocol,
 		address:  address,
@@ -93,8 +93,8 @@ func NewConnectionFactory(address string, password string, options ...redis.Dial
 
 // OpenConnect 连接工厂创建连接
 // 为外界提供一个机会: 通过连接工厂创建 {@code Redis} 连接
-func (factory RedizConnectionFactory) OpenConnect() (redis.Conn, error) {
-	conn, err := redis.Dial(factory.protocol, factory.address, factory.options...)
+func (factory RedizConnectionFactory) OpenConnect() (rediz.Conn, error) {
+	conn, err := rediz.Dial(factory.protocol, factory.address, factory.options...)
 	if err != nil {
 		return nil, err
 	}
@@ -108,15 +108,15 @@ func (factory RedizConnectionFactory) OpenConnect() (redis.Conn, error) {
 	return conn, nil
 }
 
-// ---------------------------------------------------------------- redis session
+// ---------------------------------------------------------------- rediz session
 
 // RedizSession {@code Redis} 会话
 type RedizSession struct {
-	Conn redis.Conn
+	Conn rediz.Conn
 }
 
 // Borrow 获取 {@code Redis} 会话连接
-func (rs RedizSession) Borrow() redis.Conn {
+func (rs RedizSession) Borrow() rediz.Conn {
 	return rs.Conn
 }
 
@@ -135,7 +135,7 @@ func (rs RedizSession) Release() {
 	}
 }
 
-// ---------------------------------------------------------------- redis template
+// ---------------------------------------------------------------- rediz template
 
 // RedizTemplate 操作 {@code Redis} 的模板
 // {@code RedizTemplate} 避免采用包名作为结构体前置
@@ -144,7 +144,7 @@ type RedizTemplate struct {
 }
 
 // NewRedizTemplate 创建 {@code RedizTemplate} 模板实例
-func (rt RedizTemplate) NewRedizTemplate(address string, password string, options ...redis.DialOption) RedizTemplate {
+func (rt RedizTemplate) NewRedizTemplate(address string, password string, options ...rediz.DialOption) RedizTemplate {
 	factory := NewConnectionFactory(address, password, options...)
 	return RedizTemplate{
 		factory: &factory,
@@ -169,7 +169,7 @@ func (rt RedizTemplate) Set(key string, value string) error {
 // Setex 设置值,并设置一个过期时间
 func (rt RedizTemplate) Setex(key string, value string, expireSeconds int64) error {
 	if rt.factory == nil {
-		return errors.New("redis ConnectionFactory == nil")
+		return errors.New("rediz ConnectionFactory == nil")
 	}
 	var rs, err = rt.OpenSession()
 	if err != nil {
@@ -192,14 +192,14 @@ func (rt RedizTemplate) Setex(key string, value string, expireSeconds int64) err
 // Get the get action
 func (rt RedizTemplate) Get(key string) (string, error) {
 	if rt.factory == nil {
-		return defaultString, errors.New("redis ConnectionFactory == nil")
+		return defaultString, errors.New("rediz ConnectionFactory == nil")
 	}
 	var rs, err = rt.OpenSession()
 	if err != nil {
 		return defaultString, err
 	}
 
-	reply, err := redis.String(rs.Exec(GET, key))
+	reply, err := rediz.String(rs.Exec(GET, key))
 	if err != nil {
 		return defaultString, err
 	} else {
@@ -210,7 +210,7 @@ func (rt RedizTemplate) Get(key string) (string, error) {
 // LPush left push
 func (rt RedizTemplate) LPush(key string, value string) error {
 	if rt.factory == nil {
-		return errors.New("redis ConnectionFactory == nil")
+		return errors.New("rediz ConnectionFactory == nil")
 	}
 	var rs, err = rt.OpenSession()
 	if err != nil {
@@ -228,7 +228,7 @@ func (rt RedizTemplate) LPush(key string, value string) error {
 // RPush right push
 func (rt RedizTemplate) RPush(key string, value string) error {
 	if rt.factory == nil {
-		return errors.New("redis ConnectionFactory == nil")
+		return errors.New("rediz ConnectionFactory == nil")
 	}
 	var rs, err = rt.OpenSession()
 	if err != nil {
@@ -246,14 +246,14 @@ func (rt RedizTemplate) RPush(key string, value string) error {
 // LPop left pop
 func (rt RedizTemplate) LPop(key string) (string, error) {
 	if rt.factory == nil {
-		return defaultString, errors.New("redis ConnectionFactory == nil")
+		return defaultString, errors.New("rediz ConnectionFactory == nil")
 	}
 	var rs, err = rt.OpenSession()
 	if err != nil {
 		return defaultString, err
 	}
 
-	reply, err := redis.String(rs.Exec(LPOP, key))
+	reply, err := rediz.String(rs.Exec(LPOP, key))
 	if err != nil {
 		return defaultString, err
 	} else {
@@ -264,14 +264,14 @@ func (rt RedizTemplate) LPop(key string) (string, error) {
 // RPop right pop
 func (rt RedizTemplate) RPop(key string) (string, error) {
 	if rt.factory == nil {
-		return defaultString, errors.New("redis ConnectionFactory == nil")
+		return defaultString, errors.New("rediz ConnectionFactory == nil")
 	}
 	var rs, err = rt.OpenSession()
 	if err != nil {
 		return defaultString, err
 	}
 
-	reply, err := redis.String(rs.Exec(RPOP, key))
+	reply, err := rediz.String(rs.Exec(RPOP, key))
 	if err != nil {
 		return defaultString, err
 	} else {
@@ -282,7 +282,7 @@ func (rt RedizTemplate) RPop(key string) (string, error) {
 // Delete the delete action
 func (rt RedizTemplate) Delete(key string) error {
 	if rt.factory == nil {
-		return errors.New("redis ConnectionFactory == nil")
+		return errors.New("rediz ConnectionFactory == nil")
 	}
 	var rs, err = rt.OpenSession()
 	if err != nil {
