@@ -1,10 +1,11 @@
-package redis
+package template
 
 import (
 	"errors"
 	"strconv"
 
 	"github.com/gomodule/redigo/redis"
+
 	"github.com/hellogo/internal/redis/factory"
 	"github.com/hellogo/pkg/logger"
 )

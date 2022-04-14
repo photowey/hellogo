@@ -10,7 +10,9 @@ require (
 	github.com/spf13/cobra v1.4.0
 	github.com/valyala/fasthttp v1.35.0
 	go.uber.org/zap v1.20.0
+	golang.org/x/text v0.3.7
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
 require (
@@ -31,5 +33,4 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/mod v0.5.1 // indirect
-	golang.org/x/text v0.3.7 // indirect
 )
