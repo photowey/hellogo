@@ -140,3 +140,7 @@ func Fatal(message string, args ...interface{}) {
 func Panic(message string, args ...interface{}) {
 	logger.Panicf(message, args)
 }
+
+func Sync() {
+	_ = logger.Sync()
+}
