@@ -12,22 +12,24 @@ type SortWrapper[T comparable] struct {
 	swapper func(T, T) bool
 }
 
-func (receiver SortWrapper) Len() int {
-	return len(receiver.target)
+func (receiver SortWrapper[T]) Len() int {
+	var array []T = receiver.target
+
+	return len(array)
 }
 
-func (receiver SortWrapper) Less(i, j int) bool {
+func (receiver SortWrapper[T]) Less(i, j int) bool {
 	return receiver.swapper(receiver.target[i], receiver.target[j])
 }
 
-func (receiver SortWrapper) Swap(i, j int) {
+func (receiver SortWrapper[T]) Swap(i, j int) {
 	receiver.target[i], receiver.target[j] = receiver.target[j], receiver.target[i]
 }
 
 // Sort 排序
 //
 // 采用 {@code SortWrapper} 包装
-func Sort[T any](sorter []T, swapper func(T, T) bool) {
+func Sort[T comparable](sorter []T, swapper func(T, T) bool) {
 	sort.Sort(SortWrapper[T]{
 		target:  sorter,
 		swapper: swapper,

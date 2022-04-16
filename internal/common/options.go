@@ -28,20 +28,22 @@ func OptionalEmpty[T any](zero T) Optional[T] {
 	// FIXME Data:      zero,
 	// FIXME Data 直接赋值零值为: nil, 可能触发的 {@code BUG}
 
-	return Optional[T]{
-		Data:      zero,
-		Present:   false,
-		ValueType: "",
-	}
+	var optional Optional[T]
+	optional.Data = zero
+	optional.Present = false
+	optional.ValueType = ""
+
+	return optional
 }
 
 // OptionalOf 构造 {@code Optional}
 func OptionalOf[T any](value T) Optional[T] {
-	return Optional[T]{
-		Data:      value,
-		Present:   true,
-		ValueType: reflect.TypeOf(value).String(),
-	}
+	var optional Optional[T]
+	optional.Data = value
+	optional.Present = false
+	optional.ValueType = reflect.TypeOf(value).String()
+
+	return optional
 }
 
 // ToString 将 {@code Optional[T]} 包装的目标对象解析为字符串
@@ -80,10 +82,8 @@ func (optional Optional[T]) Equals(value T, compareTo func(T, T) bool) bool {
 // Equals 可比较类型
 func (optional ComparableOptional[T]) Equals(value T) bool {
 	if optional.Present {
-		var v1 comparable = value
-		var v2 comparable = optional.Data
-
-		return v1 == v2
+		// value == optional.Data
+		return reflect.DeepEqual(value, optional.Data)
 	}
 
 	return false
