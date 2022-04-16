@@ -16,7 +16,7 @@ type Optional[T any] struct {
 
 // ComparableOptional 可比较选项设计
 //
-// 相较于 {@code Optional[T]} 不需要手动串标记器
+// 相较于 {@code Optional[T]} 不需要手动串比较器
 type ComparableOptional[T comparable] struct {
 	Optional[T]
 }
