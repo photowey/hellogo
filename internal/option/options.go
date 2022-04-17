@@ -1,4 +1,4 @@
-package common
+package option
 
 import (
 	"fmt"
@@ -9,9 +9,9 @@ import (
 
 // Optional 选项设计
 type Optional[T any] struct {
-	Data      T
-	Present   bool
-	ValueType string
+	data      T
+	present   bool
+	valueType string
 }
 
 // ComparableOptional 可比较选项设计
@@ -25,13 +25,13 @@ type ComparableOptional[T comparable] struct {
 func OptionalEmpty[T any](zero T) Optional[T] {
 	// FIXME 思考:
 	// FIXME 如果 不叫 zero 形参， 直接赋值？
-	// FIXME Data:      zero,
-	// FIXME Data 直接赋值零值为: nil, 可能触发的 {@code BUG}
+	// FIXME data:      zero,
+	// FIXME data 直接赋值零值为: nil, 可能触发的 {@code BUG}
 
 	var optional Optional[T]
-	optional.Data = zero
-	optional.Present = false
-	optional.ValueType = ""
+	optional.data = zero
+	optional.present = false
+	optional.valueType = ""
 
 	return optional
 }
@@ -39,31 +39,46 @@ func OptionalEmpty[T any](zero T) Optional[T] {
 // OptionalOf 构造 {@code Optional}
 func OptionalOf[T any](value T) Optional[T] {
 	var optional Optional[T]
-	optional.Data = value
-	optional.Present = false
-	optional.ValueType = reflect.TypeOf(value).String()
+	optional.data = value
+	optional.present = true
+	optional.valueType = reflect.TypeOf(value).String()
 
 	return optional
 }
 
-// ToString 将 {@code Optional[T]} 包装的目标对象解析为字符串
-func (optional Optional[T]) ToString() string {
-	if optional.Present {
-		str := fmt.Sprintf("%v", optional.Data)
+// String 将 {@code Optional[T]} 包装的目标对象解析为字符串
+func (optional Optional[T]) String() string {
+	if optional.present {
+		str := fmt.Sprintf("%v", optional.data)
 		return str
 	} else {
-		return "empty"
+		return ""
 	}
 }
 
 // Get 获取 {@code Optional[T]} 里面包装的目标对象
 func (optional Optional[T]) Get() T {
-	return optional.Data
+	return optional.data
+}
+
+// OrElse 获取 {@code Optional[T]} 里面包装的目标对象
+//
+// 如果:
+//
+// 1.被包装对象有值 -> 返回 -> optional.data
+//
+// 2.被包装对象没有值 -> 返回 -> standBy
+func (optional Optional[T]) OrElse(standBy T) T {
+	if optional.IsPresent() {
+		return optional.data
+	}
+
+	return standBy
 }
 
 // IsPresent 判断 {@code Optional[T]} 是否有 "真" 值
 func (optional Optional[T]) IsPresent() bool {
-	return optional.Present
+	return optional.present
 }
 
 // Equals 比较是否相当
@@ -72,8 +87,8 @@ func (optional Optional[T]) IsPresent() bool {
 //
 // @param comparator 自定义比较器
 func (optional Optional[T]) Equals(value T, compareTo func(T, T) bool) bool {
-	if optional.Present {
-		return compareTo(value, optional.Data)
+	if optional.present {
+		return compareTo(value, optional.data)
 	}
 
 	return false
@@ -81,33 +96,10 @@ func (optional Optional[T]) Equals(value T, compareTo func(T, T) bool) bool {
 
 // Equals 可比较类型
 func (optional ComparableOptional[T]) Equals(value T) bool {
-	if optional.Present {
-		// value == optional.Data
-		return reflect.DeepEqual(value, optional.Data)
+	if optional.present {
+		// value == optional.data
+		return reflect.DeepEqual(value, optional.data)
 	}
 
 	return false
-}
-
-// ---------------------------------------------------------------- Result 设计
-
-// Result 结果
-//
-// 成功 Ok
-//
-// 失败 error
-//
-// e.g.:
-//
-/*
-func Request[R any](r R) Result[R] {
-	return Result[R]{
-		Ok:     r,
-		Failed: nil,
-	}
-}
-*/
-type Result[T any] struct {
-	Ok     T
-	Failed error
 }
