@@ -1,5 +1,42 @@
 package goroutine2
 
+// ---------------------------------------------------------------- var of singleton factory by init
+
+var (
+	factory Factory
+)
+
+// ---------------------------------------------------------------- init
+
+func init() {
+	factory = Factory{}
+}
+
+// ---------------------------------------------------------------- Factory
+
+// IFactory 定义一个 Goroutine 的 工厂接口抽象
+type IFactory interface {
+	CreateGoroutine() Goroutine
+}
+
+// Factory {@code IFactory} 工厂核心实现
+type Factory struct {
+}
+
+// NewFactory 创建一个
+func NewFactory() Factory {
+	// 假的创建
+	// 在初始化的时候 -> 已经创建好
+	return factory
+}
+
+// CreateGoroutine 创建一个 {@code Goroutine}
+func (factory Factory) CreateGoroutine(fx func(parameters ...any), options ...any) Goroutine {
+	return NewGoroutine(fx, options...)
+}
+
+// ---------------------------------------------------------------- Goroutine
+
 // IGoroutine 定义一个 Golang goroutine 抽象
 type IGoroutine interface {
 	Start()

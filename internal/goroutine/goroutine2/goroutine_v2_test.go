@@ -1,6 +1,7 @@
 package goroutine2
 
 import (
+	"reflect"
 	"testing"
 	"time"
 )
@@ -169,4 +170,41 @@ func TestGoroutine_Startaround(t *testing.T) {
 			_ = __
 		})
 	}
+}
+
+func TestFactory_CreateGoroutine(t *testing.T) {
+	type args struct {
+		fx      func(parameters ...any)
+		options []any
+	}
+	tests := []struct {
+		name string
+		args args
+		want Goroutine
+	}{
+		{
+			name: "Test create goroutine by factory",
+			args: args{
+				options: []any{"hello", "world", 3, struct{ name string }{name: "sharkchili"}},
+				fx: func(parameters ...any) {
+					t.Logf("executing the goroutine callback fx,the parametes is:%v", parameters)
+				},
+			},
+			want: Goroutine{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			factory := NewFactory()
+			factory2 := NewFactory()
+			__ := factory.CreateGoroutine(tt.args.fx, tt.args.options...)
+			_ = __
+
+			if !reflect.DeepEqual(&factory, &factory) {
+				t.Errorf("the singleton factory instance address: factory1() = %v, factory2 %v", &factory, &factory2)
+			}
+		})
+	}
+
+	time.Sleep(time.Duration(2) * time.Second)
 }
