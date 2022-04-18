@@ -34,10 +34,10 @@ type Result[T any] struct {
 // 1.结果集为成功,将返回 结果集包装的内容:
 //
 // 2.结果集为失败,将返回错误信息(Failed error)
-func (r Result[T]) Expect() (T, error) {
+func (r Result[T]) Expect(standBy T) (T, error) {
 
 	if r.Failed != nil {
-		return nil, r.Failed
+		return standBy, r.Failed
 	}
 
 	return r.Ok, nil

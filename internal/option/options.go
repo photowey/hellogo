@@ -16,7 +16,7 @@ type Optional[T any] struct {
 
 // ComparableOptional 可比较选项设计
 //
-// 相较于 {@code Optional[T]} 不需要手动串比较器
+// 相较于 {@code Optional[T]} 不需要手动传比较器
 type ComparableOptional[T comparable] struct {
 	Optional[T]
 }
@@ -24,7 +24,7 @@ type ComparableOptional[T comparable] struct {
 // OptionalEmpty 返回一个空的 {@code Optional[T any]}
 func OptionalEmpty[T any](zero T) Optional[T] {
 	// FIXME 思考:
-	// FIXME 如果 不叫 zero 形参， 直接赋值？
+	// FIXME 如果 不加 zero 形参， 直接赋值？
 	// FIXME data:      zero,
 	// FIXME data 直接赋值零值为: nil, 可能触发的 {@code BUG}
 
@@ -97,7 +97,7 @@ func (optional Optional[T]) Equals(value T, compareTo func(T, T) bool) bool {
 // Equals 可比较类型
 func (optional ComparableOptional[T]) Equals(value T) bool {
 	if optional.present {
-		// value == optional.data
+		//return value == optional.data
 		return reflect.DeepEqual(value, optional.data)
 	}
 
