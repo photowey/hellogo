@@ -8,17 +8,17 @@ import (
 
 // JSOONObject {@code JSON} Object
 type JSOONObject struct {
-	context map[string]any
+	mvp map[string]any
 }
 
 // ---------------------------------------------------------------- method
 
 func (jsoon *JSOONObject) Put(key string, value any) {
-	jsoon.context[key] = value
+	jsoon.mvp[key] = value
 }
 
 func (jsoon *JSOONObject) Get(key string) any {
-	value, ok := jsoon.context[key]
+	value, ok := jsoon.mvp[key]
 	if ok {
 		return value
 	}
@@ -27,7 +27,7 @@ func (jsoon *JSOONObject) Get(key string) any {
 }
 
 func (jsoon *JSOONObject) GetSafe(key string, standBy any) (any, bool) {
-	value, ok := jsoon.context[key]
+	value, ok := jsoon.mvp[key]
 	if ok {
 		return value, true
 	}
@@ -36,7 +36,7 @@ func (jsoon *JSOONObject) GetSafe(key string, standBy any) (any, bool) {
 }
 
 func (jsoon *JSOONObject) GetString(key string) (string, bool) {
-	value, ok := jsoon.context[key]
+	value, ok := jsoon.mvp[key]
 	if ok {
 		v, ook := value.(string)
 		if ook {
@@ -49,7 +49,7 @@ func (jsoon *JSOONObject) GetString(key string) (string, bool) {
 }
 
 func (jsoon *JSOONObject) GetInt64(key string) (int64, bool) {
-	value, ok := jsoon.context[key]
+	value, ok := jsoon.mvp[key]
 	if ok {
 		switch value.(type) {
 		case int:
@@ -83,7 +83,7 @@ func (jsoon *JSOONObject) GetInt64(key string) (int64, bool) {
 }
 
 func (jsoon *JSOONObject) GetFloat64(key string) (float64, bool) {
-	value, ok := jsoon.context[key]
+	value, ok := jsoon.mvp[key]
 	fv := float64(0)
 	if ok {
 		switch value.(type) {
@@ -106,7 +106,7 @@ func (jsoon *JSOONObject) GetFloat64(key string) (float64, bool) {
 }
 
 func (jsoon *JSOONObject) GetBool(key string) (bool, bool) {
-	value, ok := jsoon.context[key]
+	value, ok := jsoon.mvp[key]
 	v, ok := value.(bool)
 	if !ok {
 		return false, false
@@ -116,21 +116,21 @@ func (jsoon *JSOONObject) GetBool(key string) (bool, bool) {
 }
 
 func (jsoon *JSOONObject) Remove(key string) {
-	_, ok := jsoon.context[key]
+	_, ok := jsoon.mvp[key]
 	if ok {
-		delete(jsoon.context, key)
+		delete(jsoon.mvp, key)
 	}
 }
 
 func (jsoon *JSOONObject) ToJSONString() (string, error) {
-	return ToJSONString(jsoon.context)
+	return ToJSONString(jsoon.mvp)
 }
 
 // ---------------------------------------------------------------- function
 
 func NewJsoonObject() *JSOONObject {
 	return &JSOONObject{
-		context: make(map[string]any),
+		mvp: make(map[string]any),
 	}
 }
 
