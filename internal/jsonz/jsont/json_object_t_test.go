@@ -34,10 +34,10 @@ func TestObject_Put(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &Object[int64]{
+			ob := &Object[int64]{
 				ctx: tt.fields.context,
 			}
-			jsoon.Put(tt.args.key, tt.args.value)
+			ob.Put(tt.args.key, tt.args.value)
 		})
 	}
 }
@@ -90,10 +90,10 @@ func TestObject_Get(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &Object[int64]{
+			ob := &Object[int64]{
 				ctx: tt.fields.context,
 			}
-			got, got1 := jsoon.Get(tt.args.key, tt.args.standBy)
+			got, got1 := ob.Get(tt.args.key, tt.args.standBy)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Get() got = %v, want %v", got, tt.want)
 			}

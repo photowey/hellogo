@@ -13,12 +13,12 @@ type Object struct {
 
 // ---------------------------------------------------------------- method
 
-func (jsoon *Object) Put(key string, value any) {
-	jsoon.ctx[key] = value
+func (ob *Object) Put(key string, value any) {
+	ob.ctx[key] = value
 }
 
-func (jsoon *Object) Get(key string) any {
-	value, ok := jsoon.ctx[key]
+func (ob *Object) Get(key string) any {
+	value, ok := ob.ctx[key]
 	if ok {
 		return value
 	}
@@ -26,8 +26,8 @@ func (jsoon *Object) Get(key string) any {
 	return nil
 }
 
-func (jsoon *Object) GetSafe(key string, standBy any) (any, bool) {
-	value, ok := jsoon.ctx[key]
+func (ob *Object) GetSafe(key string, standBy any) (any, bool) {
+	value, ok := ob.ctx[key]
 	if ok {
 		return value, true
 	}
@@ -35,8 +35,8 @@ func (jsoon *Object) GetSafe(key string, standBy any) (any, bool) {
 	return standBy, false
 }
 
-func (jsoon *Object) GetString(key string) (string, bool) {
-	value, ok := jsoon.ctx[key]
+func (ob *Object) GetString(key string) (string, bool) {
+	value, ok := ob.ctx[key]
 	if ok {
 		v, ook := value.(string)
 		if ook {
@@ -48,8 +48,8 @@ func (jsoon *Object) GetString(key string) (string, bool) {
 	return "", false
 }
 
-func (jsoon *Object) GetInt64(key string) (int64, bool) {
-	value, ok := jsoon.ctx[key]
+func (ob *Object) GetInt64(key string) (int64, bool) {
+	value, ok := ob.ctx[key]
 	if ok {
 		switch value.(type) {
 		case int:
@@ -82,8 +82,8 @@ func (jsoon *Object) GetInt64(key string) (int64, bool) {
 	return 0, false
 }
 
-func (jsoon *Object) GetFloat64(key string) (float64, bool) {
-	value, ok := jsoon.ctx[key]
+func (ob *Object) GetFloat64(key string) (float64, bool) {
+	value, ok := ob.ctx[key]
 	fv := float64(0)
 	if ok {
 		switch value.(type) {
@@ -105,8 +105,8 @@ func (jsoon *Object) GetFloat64(key string) (float64, bool) {
 	return fv, true
 }
 
-func (jsoon *Object) GetBool(key string) (bool, bool) {
-	value, ok := jsoon.ctx[key]
+func (ob *Object) GetBool(key string) (bool, bool) {
+	value, ok := ob.ctx[key]
 	v, ok := value.(bool)
 	if !ok {
 		return false, false
@@ -115,15 +115,15 @@ func (jsoon *Object) GetBool(key string) (bool, bool) {
 	return v, true
 }
 
-func (jsoon *Object) Remove(key string) {
-	_, ok := jsoon.ctx[key]
+func (ob *Object) Remove(key string) {
+	_, ok := ob.ctx[key]
 	if ok {
-		delete(jsoon.ctx, key)
+		delete(ob.ctx, key)
 	}
 }
 
-func (jsoon *Object) String() (string, error) {
-	return String(jsoon.ctx)
+func (ob *Object) String() (string, error) {
+	return String(ob.ctx)
 }
 
 // ---------------------------------------------------------------- function

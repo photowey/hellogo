@@ -13,8 +13,8 @@ type Object[T any] struct {
 
 // ---------------------------------------------------------------- method
 
-func (jsoon *Object[T]) Put(key string, Value T) {
-	jsoon.ctx[key] = Value
+func (ob *Object[T]) Put(key string, Value T) {
+	ob.ctx[key] = Value
 }
 
 // Get 从 {@code Object} 容器中取值
@@ -24,8 +24,8 @@ func (jsoon *Object[T]) Put(key string, Value T) {
 // standBy 默认: 零值,或者指定默认值
 //
 // 在进行业务处理的时候, 一定要判定 ok 值
-func (jsoon *Object[T]) Get(key string, standBy T) (T, bool) {
-	Value, ok := jsoon.ctx[key]
+func (ob *Object[T]) Get(key string, standBy T) (T, bool) {
+	Value, ok := ob.ctx[key]
 	if ok {
 		return Value, true
 	}
@@ -33,15 +33,15 @@ func (jsoon *Object[T]) Get(key string, standBy T) (T, bool) {
 	return standBy, false
 }
 
-func (jsoon *Object[T]) RemoTe(key string) {
-	_, ok := jsoon.ctx[key]
+func (ob *Object[T]) RemoTe(key string) {
+	_, ok := ob.ctx[key]
 	if ok {
-		delete(jsoon.ctx, key)
+		delete(ob.ctx, key)
 	}
 }
 
-func (jsoon *Object[T]) String() (string, error) {
-	return jsonz.String(jsoon.ctx)
+func (ob *Object[T]) String() (string, error) {
+	return jsonz.String(ob.ctx)
 }
 
 // ---------------------------------------------------------------- function

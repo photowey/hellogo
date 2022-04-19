@@ -31,10 +31,10 @@ func TestObject_Put(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &Object{
+			ob := &Object{
 				ctx: tt.fields.context,
 			}
-			jsoon.Put(tt.args.key, tt.args.value)
+			ob.Put(tt.args.key, tt.args.value)
 		})
 	}
 }
@@ -67,10 +67,10 @@ func TestObject_Get(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &Object{
+			ob := &Object{
 				ctx: tt.fields.context,
 			}
-			if got := jsoon.Get(tt.args.key); !reflect.DeepEqual(got, tt.want) {
+			if got := ob.Get(tt.args.key); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Get() = %v, want %v", got, tt.want)
 			}
 		})
@@ -124,10 +124,10 @@ func TestObject_GetSafe(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &Object{
+			ob := &Object{
 				ctx: tt.fields.context,
 			}
-			got, got1 := jsoon.GetSafe(tt.args.key, tt.args.standBy)
+			got, got1 := ob.GetSafe(tt.args.key, tt.args.standBy)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetSafe() got = %v, want %v", got, tt.want)
 			}
@@ -181,10 +181,10 @@ func TestObject_GetString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &Object{
+			ob := &Object{
 				ctx: tt.fields.context,
 			}
-			got, got1 := jsoon.GetString(tt.args.key)
+			got, got1 := ob.GetString(tt.args.key)
 			if got != tt.want {
 				t.Errorf("GetString() got = %v, want %v", got, tt.want)
 			}
@@ -290,10 +290,10 @@ func TestObject_GetInt64(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &Object{
+			ob := &Object{
 				ctx: tt.fields.context,
 			}
-			got, got1 := jsoon.GetInt64(tt.args.key)
+			got, got1 := ob.GetInt64(tt.args.key)
 			if got != tt.want {
 				t.Errorf("GetInt64() got = %v, want %v", got, tt.want)
 			}
@@ -323,8 +323,8 @@ func TestNewObjects(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := NewObjectWithMap(tt.args.mv)
-			value, ok := jsoon.GetSafe("hello", "")
+			ob := NewObjectWithMap(tt.args.mv)
+			value, ok := ob.GetSafe("hello", "")
 			if !ok || value != "world" {
 				t.Errorf("GetInt64() got1 = %v, want %v", value, "world")
 			}
