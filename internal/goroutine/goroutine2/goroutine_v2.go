@@ -89,7 +89,7 @@ func (actor Goroutine) Startaround(pre func(), post func()) Goroutine {
 	return actor
 }
 
-// run 带可变参数执行: Goroutine
+// run 执行: Goroutine
 // 将 run() 私有化 -> 不允许外界直接访问
 func (actor Goroutine) run() {
 	actor.runAround(func() {}, func() {

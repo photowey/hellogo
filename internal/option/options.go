@@ -85,7 +85,7 @@ func (optional Optional[T]) IsPresent() bool {
 //
 // @param value 比较对象
 //
-// @param comparator 自定义比较器
+// @param compareTo 自定义比较器
 func (optional Optional[T]) Equals(value T, compareTo func(T, T) bool) bool {
 	if optional.present {
 		return compareTo(value, optional.data)
@@ -97,7 +97,7 @@ func (optional Optional[T]) Equals(value T, compareTo func(T, T) bool) bool {
 // Equals 可比较类型
 func (optional ComparableOptional[T]) Equals(value T) bool {
 	if optional.present {
-		//return value == optional.data
+		// return value == optional.data
 		return reflect.DeepEqual(value, optional.data)
 	}
 
