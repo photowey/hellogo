@@ -8,7 +8,7 @@ import (
 	helpers `github.com/hellogo/internal/common/str`
 	"gopkg.in/yaml.v3"
 
-	"github.com/hellogo/internal/json"
+	"github.com/hellogo/internal/jsonz"
 )
 
 /**
@@ -105,7 +105,7 @@ func LoadYaml(path string) (err error) {
 }
 
 func printConfig() {
-	pretty, _ := json.ToJSONPretty(conf)
+	pretty, _ := jsonz.Pretty(conf)
 	fmt.Println(pretty)
 }
 

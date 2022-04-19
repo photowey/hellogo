@@ -1,11 +1,11 @@
-package json
+package jsonz
 
 import (
 	`reflect`
 	`testing`
 )
 
-func TestJSOONObject_Put(t *testing.T) {
+func TestObject_Put(t *testing.T) {
 	type fields struct {
 		context map[string]any
 	}
@@ -19,7 +19,7 @@ func TestJSOONObject_Put(t *testing.T) {
 		args   args
 	}{
 		{
-			name: "Test JSOONObject Put()",
+			name: "Test Object Put()",
 			fields: fields{
 				context: make(map[string]any),
 			},
@@ -31,15 +31,15 @@ func TestJSOONObject_Put(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &JSOONObject{
-				mvp: tt.fields.context,
+			jsoon := &Object{
+				ctx: tt.fields.context,
 			}
 			jsoon.Put(tt.args.key, tt.args.value)
 		})
 	}
 }
 
-func TestJSOONObject_Get(t *testing.T) {
+func TestObject_Get(t *testing.T) {
 	type fields struct {
 		context map[string]any
 	}
@@ -53,7 +53,7 @@ func TestJSOONObject_Get(t *testing.T) {
 		want   any
 	}{
 		{
-			name: "Test JSOONObject Get()",
+			name: "Test Object Get()",
 			fields: fields{
 				context: map[string]any{
 					"hello": "world",
@@ -67,8 +67,8 @@ func TestJSOONObject_Get(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &JSOONObject{
-				mvp: tt.fields.context,
+			jsoon := &Object{
+				ctx: tt.fields.context,
 			}
 			if got := jsoon.Get(tt.args.key); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Get() = %v, want %v", got, tt.want)
@@ -77,7 +77,7 @@ func TestJSOONObject_Get(t *testing.T) {
 	}
 }
 
-func TestJSOONObject_GetSafe(t *testing.T) {
+func TestObject_GetSafe(t *testing.T) {
 	type fields struct {
 		context map[string]any
 	}
@@ -93,7 +93,7 @@ func TestJSOONObject_GetSafe(t *testing.T) {
 		ok     bool
 	}{
 		{
-			name: "Test JSOONObject GetSafe()",
+			name: "Test Object GetSafe()",
 			fields: fields{
 				context: map[string]any{
 					"hello": "world",
@@ -108,7 +108,7 @@ func TestJSOONObject_GetSafe(t *testing.T) {
 		},
 
 		{
-			name: "Test JSOONObject GetSafe()",
+			name: "Test Object GetSafe()",
 			fields: fields{
 				context: map[string]any{
 					"hello": "world",
@@ -124,8 +124,8 @@ func TestJSOONObject_GetSafe(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &JSOONObject{
-				mvp: tt.fields.context,
+			jsoon := &Object{
+				ctx: tt.fields.context,
 			}
 			got, got1 := jsoon.GetSafe(tt.args.key, tt.args.standBy)
 			if !reflect.DeepEqual(got, tt.want) {
@@ -138,7 +138,7 @@ func TestJSOONObject_GetSafe(t *testing.T) {
 	}
 }
 
-func TestJSOONObject_GetString(t *testing.T) {
+func TestObject_GetString(t *testing.T) {
 	type fields struct {
 		context map[string]any
 	}
@@ -153,7 +153,7 @@ func TestJSOONObject_GetString(t *testing.T) {
 		ok     bool
 	}{
 		{
-			name: "Test JSOONObject GetString()-true",
+			name: "Test Object GetString()-true",
 			fields: fields{
 				context: map[string]any{
 					"hello": "world",
@@ -166,7 +166,7 @@ func TestJSOONObject_GetString(t *testing.T) {
 			ok:   true,
 		},
 		{
-			name: "Test JSOONObject GetString()-false",
+			name: "Test Object GetString()-false",
 			fields: fields{
 				context: map[string]any{
 					"hello": 8848,
@@ -181,8 +181,8 @@ func TestJSOONObject_GetString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &JSOONObject{
-				mvp: tt.fields.context,
+			jsoon := &Object{
+				ctx: tt.fields.context,
 			}
 			got, got1 := jsoon.GetString(tt.args.key)
 			if got != tt.want {
@@ -195,7 +195,7 @@ func TestJSOONObject_GetString(t *testing.T) {
 	}
 }
 
-func TestJSOONObject_GetInt64(t *testing.T) {
+func TestObject_GetInt64(t *testing.T) {
 	type fields struct {
 		context map[string]any
 	}
@@ -210,7 +210,7 @@ func TestJSOONObject_GetInt64(t *testing.T) {
 		ok     bool
 	}{
 		{
-			name: "Test JSOONObject GetInt64()-int64-true",
+			name: "Test Object GetInt64()-int64-true",
 			fields: fields{
 				context: map[string]any{
 					"hello": int64(1234567890912345678),
@@ -223,7 +223,7 @@ func TestJSOONObject_GetInt64(t *testing.T) {
 			ok:   true,
 		},
 		{
-			name: "Test JSOONObject GetInt64()-int-true",
+			name: "Test Object GetInt64()-int-true",
 			fields: fields{
 				context: map[string]any{
 					"hello": 1234567890987654321,
@@ -236,7 +236,7 @@ func TestJSOONObject_GetInt64(t *testing.T) {
 			ok:   true,
 		},
 		{
-			name: "Test JSOONObject GetInt64()-int8-true",
+			name: "Test Object GetInt64()-int8-true",
 			fields: fields{
 				context: map[string]any{
 					"hello": int8(127),
@@ -249,7 +249,7 @@ func TestJSOONObject_GetInt64(t *testing.T) {
 			ok:   true,
 		},
 		{
-			name: "Test JSOONObject GetInt64()-int32-true",
+			name: "Test Object GetInt64()-int32-true",
 			fields: fields{
 				context: map[string]any{
 					"hello": int32(8848),
@@ -262,7 +262,7 @@ func TestJSOONObject_GetInt64(t *testing.T) {
 			ok:   true,
 		},
 		{
-			name: "Test JSOONObject GetInt64()-string-false",
+			name: "Test Object GetInt64()-string-false",
 			fields: fields{
 				context: map[string]any{
 					"hello": "world",
@@ -275,7 +275,7 @@ func TestJSOONObject_GetInt64(t *testing.T) {
 			ok:   false,
 		},
 		{
-			name: "Test JSOONObject GetInt64()-float-false",
+			name: "Test Object GetInt64()-float-false",
 			fields: fields{
 				context: map[string]any{
 					"hello": 1.01,
@@ -290,8 +290,8 @@ func TestJSOONObject_GetInt64(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &JSOONObject{
-				mvp: tt.fields.context,
+			jsoon := &Object{
+				ctx: tt.fields.context,
 			}
 			got, got1 := jsoon.GetInt64(tt.args.key)
 			if got != tt.want {
@@ -304,7 +304,7 @@ func TestJSOONObject_GetInt64(t *testing.T) {
 	}
 }
 
-func TestNewJsoonObjects(t *testing.T) {
+func TestNewObjects(t *testing.T) {
 	type args struct {
 		mv map[string]any
 	}
@@ -313,7 +313,7 @@ func TestNewJsoonObjects(t *testing.T) {
 		args args
 	}{
 		{
-			name: "Test new JSOONObject-with-map",
+			name: "Test new Object-with-map",
 			args: args{
 				mv: map[string]any{
 					"hello": "world",
@@ -323,7 +323,7 @@ func TestNewJsoonObjects(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := NewJsoonObjects(tt.args.mv)
+			jsoon := NewObjectWithMap(tt.args.mv)
 			value, ok := jsoon.GetSafe("hello", "")
 			if !ok || value != "world" {
 				t.Errorf("GetInt64() got1 = %v, want %v", value, "world")
@@ -342,7 +342,7 @@ var body = `{
   "press": "Pearson Education"
 }`
 
-func TestParseJSONObject(t *testing.T) {
+func TestParseObject(t *testing.T) {
 	type args struct {
 		body string
 	}
@@ -352,7 +352,7 @@ func TestParseJSONObject(t *testing.T) {
 		want bool
 	}{
 		{
-			name: "Test new JSOONObject",
+			name: "Test new Object",
 			args: args{
 				body: body,
 			},
@@ -360,13 +360,13 @@ func TestParseJSONObject(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := ParseJSONObject(tt.args.body)
+			got, err := ParseObject(tt.args.body)
 			if err != nil {
-				t.Errorf("ParseJSONObject error:%v", err)
+				t.Errorf("ParseObject error:%v", err)
 			}
 			safe, ok := got.GetSafe("id", "")
 			if !ok || "9787111558422" != safe {
-				t.Errorf("ParseJSONObject and GetSafe() error:%v", err)
+				t.Errorf("ParseObject and GetSafe() error:%v", err)
 			}
 		})
 	}

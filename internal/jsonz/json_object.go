@@ -1,4 +1,4 @@
-package json
+package jsonz
 
 import (
 	`strconv`
@@ -6,19 +6,19 @@ import (
 
 // ---------------------------------------------------------------- JSON
 
-// JSOONObject {@code JSON} Object
-type JSOONObject struct {
-	mvp map[string]any
+// Object {@code JSON} Object
+type Object struct {
+	ctx map[string]any
 }
 
 // ---------------------------------------------------------------- method
 
-func (jsoon *JSOONObject) Put(key string, value any) {
-	jsoon.mvp[key] = value
+func (jsoon *Object) Put(key string, value any) {
+	jsoon.ctx[key] = value
 }
 
-func (jsoon *JSOONObject) Get(key string) any {
-	value, ok := jsoon.mvp[key]
+func (jsoon *Object) Get(key string) any {
+	value, ok := jsoon.ctx[key]
 	if ok {
 		return value
 	}
@@ -26,8 +26,8 @@ func (jsoon *JSOONObject) Get(key string) any {
 	return nil
 }
 
-func (jsoon *JSOONObject) GetSafe(key string, standBy any) (any, bool) {
-	value, ok := jsoon.mvp[key]
+func (jsoon *Object) GetSafe(key string, standBy any) (any, bool) {
+	value, ok := jsoon.ctx[key]
 	if ok {
 		return value, true
 	}
@@ -35,8 +35,8 @@ func (jsoon *JSOONObject) GetSafe(key string, standBy any) (any, bool) {
 	return standBy, false
 }
 
-func (jsoon *JSOONObject) GetString(key string) (string, bool) {
-	value, ok := jsoon.mvp[key]
+func (jsoon *Object) GetString(key string) (string, bool) {
+	value, ok := jsoon.ctx[key]
 	if ok {
 		v, ook := value.(string)
 		if ook {
@@ -48,8 +48,8 @@ func (jsoon *JSOONObject) GetString(key string) (string, bool) {
 	return "", false
 }
 
-func (jsoon *JSOONObject) GetInt64(key string) (int64, bool) {
-	value, ok := jsoon.mvp[key]
+func (jsoon *Object) GetInt64(key string) (int64, bool) {
+	value, ok := jsoon.ctx[key]
 	if ok {
 		switch value.(type) {
 		case int:
@@ -82,8 +82,8 @@ func (jsoon *JSOONObject) GetInt64(key string) (int64, bool) {
 	return 0, false
 }
 
-func (jsoon *JSOONObject) GetFloat64(key string) (float64, bool) {
-	value, ok := jsoon.mvp[key]
+func (jsoon *Object) GetFloat64(key string) (float64, bool) {
+	value, ok := jsoon.ctx[key]
 	fv := float64(0)
 	if ok {
 		switch value.(type) {
@@ -105,8 +105,8 @@ func (jsoon *JSOONObject) GetFloat64(key string) (float64, bool) {
 	return fv, true
 }
 
-func (jsoon *JSOONObject) GetBool(key string) (bool, bool) {
-	value, ok := jsoon.mvp[key]
+func (jsoon *Object) GetBool(key string) (bool, bool) {
+	value, ok := jsoon.ctx[key]
 	v, ok := value.(bool)
 	if !ok {
 		return false, false
@@ -115,27 +115,27 @@ func (jsoon *JSOONObject) GetBool(key string) (bool, bool) {
 	return v, true
 }
 
-func (jsoon *JSOONObject) Remove(key string) {
-	_, ok := jsoon.mvp[key]
+func (jsoon *Object) Remove(key string) {
+	_, ok := jsoon.ctx[key]
 	if ok {
-		delete(jsoon.mvp, key)
+		delete(jsoon.ctx, key)
 	}
 }
 
-func (jsoon *JSOONObject) ToJSONString() (string, error) {
-	return ToJSONString(jsoon.mvp)
+func (jsoon *Object) String() (string, error) {
+	return String(jsoon.ctx)
 }
 
 // ---------------------------------------------------------------- function
 
-func NewJsoonObject() *JSOONObject {
-	return &JSOONObject{
-		mvp: make(map[string]any),
+func NewObject() *Object {
+	return &Object{
+		ctx: make(map[string]any),
 	}
 }
 
-func NewJsoonObjects(mv map[string]any) *JSOONObject {
-	mvp := NewJsoonObject()
+func NewObjectWithMap(mv map[string]any) *Object {
+	mvp := NewObject()
 	if len(mv) > 0 {
 		for k, v := range mv {
 			mvp.Put(k, v)
@@ -145,12 +145,12 @@ func NewJsoonObjects(mv map[string]any) *JSOONObject {
 	return mvp
 }
 
-func ParseJSONObject(body string) (*JSOONObject, error) {
+func ParseObject(body string) (*Object, error) {
 	mv := make(map[string]any)
-	err := ToStruct([]byte(body), &mv)
+	err := UnmarshalStruct([]byte(body), &mv)
 	if err != nil {
 		return nil, err
 	}
 
-	return NewJsoonObjects(mv), nil
+	return NewObjectWithMap(mv), nil
 }

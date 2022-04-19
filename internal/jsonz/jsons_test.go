@@ -1,4 +1,4 @@
-package json
+package jsonz
 
 import (
 	"io"
@@ -47,8 +47,8 @@ func TestToStruct(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := ToStruct(tt.args.data, tt.args.target); (err != nil) != tt.wantErr {
-				t.Errorf("ToStruct() error = %v, wantErr %v", err, tt.wantErr)
+			if err := UnmarshalStruct(tt.args.data, tt.args.target); (err != nil) != tt.wantErr {
+				t.Errorf("UnmarshalStruct() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
@@ -77,8 +77,8 @@ func TestToStructd(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := ToStructd(tt.args.reader, tt.args.target); (err != nil) != tt.wantErr {
-				t.Errorf("ToStructd() error = %v, wantErr %v", err, tt.wantErr)
+			if err := DecodeStruct(tt.args.reader, tt.args.target); (err != nil) != tt.wantErr {
+				t.Errorf("DecodeStruct() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

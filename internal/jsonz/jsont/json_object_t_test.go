@@ -5,7 +5,7 @@ import (
 	`testing`
 )
 
-func TestJSOONObject_Put(t *testing.T) {
+func TestObject_Put(t *testing.T) {
 	type fields[T any] struct {
 		context map[string]T
 	}
@@ -22,7 +22,7 @@ func TestJSOONObject_Put(t *testing.T) {
 
 	tests := []testT[int64]{
 		{
-			name: "Test Generic JSOONObject Put()",
+			name: "Test Generic Object Put()",
 			fields: fields[int64]{
 				context: make(map[string]int64),
 			},
@@ -34,15 +34,15 @@ func TestJSOONObject_Put(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &JSOONObject[int64]{
-				context: tt.fields.context,
+			jsoon := &Object[int64]{
+				ctx: tt.fields.context,
 			}
 			jsoon.Put(tt.args.key, tt.args.value)
 		})
 	}
 }
 
-func TestJSOONObject_Get(t *testing.T) {
+func TestObject_Get(t *testing.T) {
 	type fields[T any] struct {
 		context map[string]T
 	}
@@ -60,7 +60,7 @@ func TestJSOONObject_Get(t *testing.T) {
 
 	tests := []testT[int64]{
 		{
-			name: "Test Generic JSOONObject Get()-true",
+			name: "Test Generic Object Get()-true",
 			fields: fields[int64]{
 				context: map[string]int64{
 					"hello": 1234567890987,
@@ -74,7 +74,7 @@ func TestJSOONObject_Get(t *testing.T) {
 			ok:   true,
 		},
 		{
-			name: "Test Generic JSOONObject Get()-false",
+			name: "Test Generic Object Get()-false",
 			fields: fields[int64]{
 				context: map[string]int64{
 					"hello": 1234567890987,
@@ -90,8 +90,8 @@ func TestJSOONObject_Get(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			jsoon := &JSOONObject[int64]{
-				context: tt.fields.context,
+			jsoon := &Object[int64]{
+				ctx: tt.fields.context,
 			}
 			got, got1 := jsoon.Get(tt.args.key, tt.args.standBy)
 			if !reflect.DeepEqual(got, tt.want) {
@@ -100,6 +100,49 @@ func TestJSOONObject_Get(t *testing.T) {
 			if got1 != tt.ok {
 				t.Errorf("Get() got1 = %v, want %v", got1, tt.ok)
 			}
+		})
+	}
+}
+
+var body = `{
+  "id": "9787111558422",
+  "name": "The Go Programming Language",
+  "authors": [
+    "Alan A.A.Donovan",
+    "Brian W. Kergnighan"
+  ],
+  "press": "Pearson Education"
+}`
+
+func TestParseObject(t *testing.T) {
+	type args struct {
+		body string
+	}
+	type testT[T any] struct {
+		name string
+		args args
+		want *Object[T]
+		ok   bool
+	}
+
+	tests := []testT[any]{
+		{
+			name: "Test Generic ParseObject()",
+			args: args{
+				body: body,
+			},
+			want: &Object[any]{},
+			ok:   true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ParseObject[any](tt.args.body)
+			if err != nil {
+				t.Errorf("ParseObject() error = %v, ok %v", err, tt.ok)
+				return
+			}
+			t.Logf("ParseObject() got = %v", got)
 		})
 	}
 }
