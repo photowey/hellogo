@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
+	helpers `github.com/hellogo/internal/common/str`
 	"gopkg.in/yaml.v3"
 
-	helpers "github.com/hellogo/internal/common"
 	"github.com/hellogo/internal/json"
 )
 
@@ -75,7 +75,7 @@ func LoadToml(path string) (err error) {
 	_, err = toml.DecodeFile(path, &conf)
 	fmt.Println("--- >>> init the app toml config successfully <<< ---")
 
-	if index := helpers.StringsContains(profiles, conf.Env); index == -1 {
+	if index := helpers.ArrayContains(profiles, conf.Env); index == -1 {
 		return fmt.Errorf("the env config candidate value is:%v", profiles)
 	}
 
@@ -95,7 +95,7 @@ func LoadYaml(path string) (err error) {
 
 	fmt.Println("--- >>> init the app yaml config successfully <<< ---")
 
-	if index := helpers.StringsContains(profiles, conf.Env); index == -1 {
+	if index := helpers.ArrayContains(profiles, conf.Env); index == -1 {
 		return fmt.Errorf("the env config candidate value is:%v", profiles)
 	}
 

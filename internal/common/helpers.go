@@ -39,3 +39,22 @@ func ListFiles(dir string, level int) {
 		}
 	}
 }
+
+func UnSafeZeroValue(target any) any {
+	switch t := target.(type) {
+	case int8, int16, int32, int64, uint, byte, uint16, uint32, uint64:
+		return 0
+	case uintptr:
+		return 0
+	case float32, float64:
+		return 0.0
+	case []byte:
+		return []byte{}
+	case string:
+		return EmptyString
+	case *string:
+		return *t
+	default:
+		return nil
+	}
+}

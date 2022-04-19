@@ -1,4 +1,4 @@
-package common
+package str
 
 import (
 	"sort"
@@ -16,7 +16,8 @@ type StringBuffer struct {
 }
 
 func (sb StringBuffer) Append(needle string) StringBuffer {
-	_ = append(sb.buffer, needle)
+	buf := append(sb.buffer, needle)
+	sb.buffer = buf
 
 	return sb
 }

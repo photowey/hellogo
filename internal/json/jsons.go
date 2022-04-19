@@ -9,18 +9,16 @@ import (
 	"io"
 )
 
-// ---------------------------------------------------------------- JSON
-
 func ToJSONString(body any) (string, error) {
-	bytes, err := json.Marshal(body)
+	bytez, err := json.Marshal(body)
 
-	return string(bytes), err
+	return string(bytez), err
 }
 
 func ToJSONPretty(body any) (string, error) {
-	bytes, err := json.MarshalIndent(body, "", "\t")
+	bytez, err := json.MarshalIndent(body, "", "\t")
 
-	return string(bytes), err
+	return string(bytez), err
 }
 
 func ToStructd(reader io.Reader, target any) error {
