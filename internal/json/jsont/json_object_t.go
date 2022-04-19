@@ -58,8 +58,8 @@ func NewJsoonObjects[T any](mT map[string]T) *JSOONObject[T] {
 	mvp := NewJsoonObject[T]()
 
 	if len(mT) > 0 {
-		for k, T := range mT {
-			mvp.Put(k, T)
+		for k, v := range mT {
+			mvp.Put(k, v)
 		}
 	}
 
