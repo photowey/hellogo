@@ -66,6 +66,9 @@ func (cm *CMap) calculatePartition(key PartitionedKey) *kernelMap {
 // -------------------------------------------------------------
 
 func NewCMap(capacity int) (*CMap, error) {
+	if capacity < 2 {
+		return nil, errors.New("capacity must be an integer multiple of 2")
+	}
 	// 容量必须是: 2 的整数倍
 	zero := capacity & (capacity - 1)
 	if 0 != zero {
