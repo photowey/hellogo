@@ -1,6 +1,7 @@
 package cmap
 
 import (
+	`errors`
 	"sync"
 )
 
@@ -56,18 +57,26 @@ func (km *kernelMap) remove(key PartitionedKey) {
 // -------------------------------------------------------------
 
 func (cm *CMap) calculatePartition(key PartitionedKey) *kernelMap {
-	partitionID := key.PartitionKey() % int64(cm.buckets)
-	return (*kernelMap)(cm.partitions[partitionID])
+	// 获取 key 所在 {@code bucket } index
+	partitionId := key.PartitionKey() & (int64(cm.buckets) - 1)
+
+	return cm.partitions[partitionId]
 }
 
 // -------------------------------------------------------------
 
-func NewCMap(index int) *CMap {
+func NewCMap(capacity int) (*CMap, error) {
+	// 容量必须是: 2 的整数倍
+	zero := capacity & (capacity - 1)
+	if 0 != zero {
+		return nil, errors.New("capacity must be an integer multiple of 2")
+	}
 	var partitions []*kernelMap
-	for i := 0; i < index; i++ {
+	for i := 0; i < capacity; i++ {
 		partitions = append(partitions, createKernelMap())
 	}
-	return &CMap{partitions, index}
+
+	return &CMap{partitions, capacity}, nil
 }
 
 // -------------------------------------------------------------
