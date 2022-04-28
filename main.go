@@ -1,10 +1,9 @@
 package main
 
 import (
-	`github.com/hellogo/cmd`
+	App `github.com/hellogo/cmd`
 )
 
 func main() {
-	cmd.Run()
-	// prec.Run()
+	App.Run()
 }
