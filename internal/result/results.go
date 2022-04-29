@@ -35,7 +35,6 @@ type Result[T any] struct {
 //
 // 2.结果集为失败,将返回错误信息(Failed error)
 func (r Result[T]) Expect(standBy T) (T, error) {
-
 	if r.Failed != nil {
 		return standBy, r.Failed
 	}

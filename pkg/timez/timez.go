@@ -1,0 +1,5 @@
+package timez
+
+func TimeHello() {
+
+}
