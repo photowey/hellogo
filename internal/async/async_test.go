@@ -13,7 +13,7 @@ func TestFuture(t *testing.T) {
 		return DoneAsync(t)
 	})
 	t.Log("Done is running ...")
-	futureValue := future.Await()
+	futureValue, _ := future.Await()
 	t.Log(futureValue)
 }
 
