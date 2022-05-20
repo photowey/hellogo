@@ -101,7 +101,7 @@ func DecryptByPrivateKeyOAEP(encryptedBase64 string, privateKey *rsa.PrivateKey)
 		return "", ErrPublicKeyNULL
 	}
 
-	encryptedBytes, err := decodeBase64(encryptedBase64)
+	encryptedBytes, err := decryptBase64(encryptedBase64)
 	if err != nil {
 		return "", err
 	}
@@ -121,7 +121,7 @@ func DecryptByPrivateKeyPKCS1(encryptedBase64 string, privateKey *rsa.PrivateKey
 		return "", ErrPublicKeyNULL
 	}
 
-	encryptedBytes, err := decodeBase64(encryptedBase64)
+	encryptedBytes, err := decryptBase64(encryptedBase64)
 	if err != nil {
 		return "", err
 	}
@@ -141,7 +141,7 @@ func DecryptByPrivateKeyBlockOAEP(encryptedBase64 string, privateKey *rsa.Privat
 		return "", ErrPublicKeyNULL
 	}
 
-	encryptedBytes, err := decodeBase64(encryptedBase64)
+	encryptedBytes, err := decryptBase64(encryptedBase64)
 	if err != nil {
 		return "", err
 	}
@@ -161,7 +161,7 @@ func DecryptByPrivateKeyBlockPKCS1(encryptedBase64 string, privateKey *rsa.Priva
 		return "", ErrPublicKeyNULL
 	}
 
-	encryptedBytes, err := decodeBase64(encryptedBase64)
+	encryptedBytes, err := decryptBase64(encryptedBase64)
 	if err != nil {
 		return "", err
 	}
@@ -229,7 +229,7 @@ func encryptBase64(encryptedBytes []byte) string {
 	return encrypted
 }
 
-func decodeBase64(encryptedBase64 string) ([]byte, error) {
+func decryptBase64(encryptedBase64 string) ([]byte, error) {
 	encryptedBytes, err := base64.StdEncoding.DecodeString(encryptedBase64)
 	if err != nil {
 		return nil, fmt.Errorf("base64:decode encryptedBytes data failed, error: %s", err.Error())
