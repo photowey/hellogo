@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto"
 	"crypto/rsa"
+	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
 	"math/big"
@@ -43,11 +44,11 @@ func fromBase10(base10 string) *big.Int {
 
 func TestSignPKCS1v15(t *testing.T) {
 	for i, test := range signPKCS1v15Tests {
-		h := sha256.New()
+		h := sha1.New()
 		h.Write([]byte(test.in))
 		digest := h.Sum(nil)
 
-		s, err := rsa.SignPKCS1v15(nil, rsaPrivateKey, crypto.SHA256, digest)
+		s, err := rsa.SignPKCS1v15(nil, rsaPrivateKey, crypto.SHA1, digest)
 		if err != nil {
 			t.Errorf("#%d %s", i, err)
 		}
@@ -61,13 +62,13 @@ func TestSignPKCS1v15(t *testing.T) {
 
 func TestVerifyPKCS1v15(t *testing.T) {
 	for i, test := range signPKCS1v15Tests {
-		h := sha256.New()
+		h := sha1.New()
 		h.Write([]byte(test.in))
 		digest := h.Sum(nil)
 
 		sig, _ := hex.DecodeString(test.out)
 
-		err := rsa.VerifyPKCS1v15(&rsaPrivateKey.PublicKey, crypto.SHA256, digest, sig)
+		err := rsa.VerifyPKCS1v15(&rsaPrivateKey.PublicKey, crypto.SHA1, digest, sig)
 		if err != nil {
 			t.Errorf("#%d %s", i, err)
 		}
