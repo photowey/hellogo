@@ -1,10 +1,10 @@
 package mysql
 
 import (
-	`database/sql`
+	"database/sql"
 	"fmt"
 
-	`github.com/hellogo/internal/jsonz`
+	"github.com/hellogo/internal/jsonz"
 )
 
 /**
@@ -83,7 +83,6 @@ func Init() {
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {
-
 		}
 	}(rows)
 
@@ -132,5 +131,4 @@ func Init() {
 
 	databaseInfo, _ := jsonz.String(database)
 	fmt.Printf("the database info is:\n%s\n", databaseInfo)
-
 }

@@ -13,8 +13,8 @@ func (u *iterator) HasNext() bool {
 	}
 
 	return false
-
 }
+
 func (u *iterator) Next() any {
 	if u.HasNext() {
 		dst := u.array[u.index]

@@ -25,7 +25,6 @@ func run() {
 	defer func(client *Client) {
 		err := client.Close()
 		if err != nil {
-
 		}
 	}(client)
 	// Run the auto migration tool.

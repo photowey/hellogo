@@ -40,5 +40,4 @@ func (r Result[T]) Expect(standBy T) (T, error) {
 	}
 
 	return r.Ok, nil
-
 }

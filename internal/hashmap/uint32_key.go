@@ -1,7 +1,7 @@
 package hashmap
 
 import (
-	`github.com/hellogo/internal/hash`
+	"github.com/hellogo/internal/hash"
 )
 
 var _ HashKey = (*Uint32Key)(nil)

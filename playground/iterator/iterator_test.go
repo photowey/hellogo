@@ -1,8 +1,8 @@
 package iterator
 
 import (
-	`reflect`
-	`testing`
+	"reflect"
+	"testing"
 )
 
 func Test_iterator_Next(t *testing.T) {

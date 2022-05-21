@@ -1,14 +1,16 @@
 package id
 
 import (
-	`crypto/rand`
-	`math/big`
-	`sync`
+	"crypto/rand"
+	"math/big"
+	"sync"
 )
 
-const saltBit = uint(8)               // 随机因子二进制位数
-const saltShift = uint(8)             // 随机因子移位数
-const incrShift = saltBit + saltShift // 自增数移位数
+const (
+	saltBit   = uint(8)             // 随机因子二进制位数
+	saltShift = uint(8)             // 随机因子移位数
+	incrShift = saltBit + saltShift // 自增数移位数
+)
 
 type Mist struct {
 	sync.Mutex       // 互斥锁

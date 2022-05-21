@@ -22,9 +22,7 @@ const (
 
 // ---------------------------------------------------------------- var
 
-var (
-	DefaultSession RedizSession // 默认的: {@code redizSession} 空实例
-)
+var DefaultSession RedizSession // 默认的: {@code redizSession} 空实例
 
 var (
 	protocol      = "tcp"  // {@code Redis} 协议
@@ -59,7 +57,7 @@ type Session interface {
 
 // Template {@code Redis} 操作模板抽象接口
 type Template interface {
-	OpenSession() (RedizSession, error)                        //开启会话
+	OpenSession() (RedizSession, error)                        // 开启会话
 	Set(key string, value string) error                        // 设置值
 	Setex(key string, value string, expireSeconds int64) error // 设置过期值
 	Get(key string) (string, error)                            // 获取值
@@ -177,7 +175,7 @@ func (rt RedizTemplate) Setex(key string, value string, expireSeconds int64) err
 	if rt.factory == nil {
 		return errors.New("rediz ConnectionFactory == nil")
 	}
-	var rs, err = rt.OpenSession()
+	rs, err := rt.OpenSession()
 	if err != nil {
 		return err
 	}
@@ -200,7 +198,7 @@ func (rt RedizTemplate) Get(key string) (string, error) {
 	if rt.factory == nil {
 		return defaultString, errors.New("rediz ConnectionFactory == nil")
 	}
-	var rs, err = rt.OpenSession()
+	rs, err := rt.OpenSession()
 	if err != nil {
 		return defaultString, err
 	}
@@ -218,7 +216,7 @@ func (rt RedizTemplate) LPush(key string, value string) error {
 	if rt.factory == nil {
 		return errors.New("rediz ConnectionFactory == nil")
 	}
-	var rs, err = rt.OpenSession()
+	rs, err := rt.OpenSession()
 	if err != nil {
 		return err
 	}
@@ -236,7 +234,7 @@ func (rt RedizTemplate) RPush(key string, value string) error {
 	if rt.factory == nil {
 		return errors.New("rediz ConnectionFactory == nil")
 	}
-	var rs, err = rt.OpenSession()
+	rs, err := rt.OpenSession()
 	if err != nil {
 		return err
 	}
@@ -254,7 +252,7 @@ func (rt RedizTemplate) LPop(key string) (string, error) {
 	if rt.factory == nil {
 		return defaultString, errors.New("rediz ConnectionFactory == nil")
 	}
-	var rs, err = rt.OpenSession()
+	rs, err := rt.OpenSession()
 	if err != nil {
 		return defaultString, err
 	}
@@ -272,7 +270,7 @@ func (rt RedizTemplate) RPop(key string) (string, error) {
 	if rt.factory == nil {
 		return defaultString, errors.New("rediz ConnectionFactory == nil")
 	}
-	var rs, err = rt.OpenSession()
+	rs, err := rt.OpenSession()
 	if err != nil {
 		return defaultString, err
 	}
@@ -290,7 +288,7 @@ func (rt RedizTemplate) Delete(key string) error {
 	if rt.factory == nil {
 		return errors.New("rediz ConnectionFactory == nil")
 	}
-	var rs, err = rt.OpenSession()
+	rs, err := rt.OpenSession()
 	if err != nil {
 		return err
 	}

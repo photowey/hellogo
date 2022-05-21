@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
-	helpers `github.com/hellogo/internal/common/str`
+	helpers "github.com/hellogo/internal/common/str"
 	"gopkg.in/yaml.v3"
 
 	"github.com/hellogo/internal/jsonz"

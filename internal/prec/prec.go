@@ -1,9 +1,9 @@
 package prec
 
 import (
-	`fmt`
-	`net/http`
-	`sync`
+	"fmt"
+	"net/http"
+	"sync"
 
 	zero "github.com/zeromicro/go-zero/core/service"
 )

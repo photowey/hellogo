@@ -1,5 +1,4 @@
 package timez
 
 func TimeHello() {
-
 }

@@ -1,7 +1,7 @@
 package hashmap
 
 import (
-	`errors`
+	"errors"
 )
 
 const (

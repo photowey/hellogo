@@ -29,8 +29,8 @@ type RedizTemplate struct {
 
 // New 创建 {@code RedizTemplate} 模板实例
 func (rt RedizTemplate) New(url string, password string, database int) RedizTemplate {
-	var connectionFactory = factory.New(url, password, database)
-	var template = RedizTemplate{
+	connectionFactory := factory.New(url, password, database)
+	template := RedizTemplate{
 		ConnectionFactory: &connectionFactory,
 	}
 
@@ -42,7 +42,7 @@ func (rt RedizTemplate) LPush(key string, value string) error {
 	if rt.ConnectionFactory == nil {
 		return errors.New("redis ConnectionFactory == nil")
 	}
-	var session, err = rt.ConnectionFactory.OpenSession()
+	session, err := rt.ConnectionFactory.OpenSession()
 	if err != nil {
 		logger.Info("redis set failed:", err)
 		return err
@@ -62,7 +62,7 @@ func (rt RedizTemplate) RPush(key string, value string) error {
 	if rt.ConnectionFactory == nil {
 		return errors.New("redis ConnectionFactory == nil")
 	}
-	var session, err = rt.ConnectionFactory.OpenSession()
+	session, err := rt.ConnectionFactory.OpenSession()
 	if err != nil {
 		logger.Info("redis set failed:", err)
 		return err
@@ -82,7 +82,7 @@ func (rt RedizTemplate) LPop(key string) (string, error) {
 	if rt.ConnectionFactory == nil {
 		return "", errors.New("redis ConnectionFactory == nil")
 	}
-	var session, err = rt.ConnectionFactory.OpenSession()
+	session, err := rt.ConnectionFactory.OpenSession()
 	defer rt.ConnectionFactory.Close(session)
 	if err != nil {
 		return "", err
@@ -100,7 +100,7 @@ func (rt RedizTemplate) RPop(key string) (string, error) {
 	if rt.ConnectionFactory == nil {
 		return "", errors.New("redis ConnectionFactory == nil")
 	}
-	var session, err = rt.ConnectionFactory.OpenSession()
+	session, err := rt.ConnectionFactory.OpenSession()
 	defer rt.ConnectionFactory.Close(session)
 	if err != nil {
 		return "", err
@@ -118,7 +118,7 @@ func (rt RedizTemplate) Set(key string, value string, expireSeconds int64) error
 	if rt.ConnectionFactory == nil {
 		return errors.New("redis ConnectionFactory == nil")
 	}
-	var session, err = rt.ConnectionFactory.OpenSession()
+	session, err := rt.ConnectionFactory.OpenSession()
 	if err != nil {
 		logger.Info("redis set failed:", err)
 		return err
@@ -138,7 +138,7 @@ func (rt RedizTemplate) Get(key string) (string, error) {
 	if rt.ConnectionFactory == nil {
 		return "", errors.New("redis ConnectionFactory == nil")
 	}
-	var session, err = rt.ConnectionFactory.OpenSession()
+	session, err := rt.ConnectionFactory.OpenSession()
 	defer rt.ConnectionFactory.Close(session)
 	if err != nil {
 		return "", err
@@ -156,7 +156,7 @@ func (rt RedizTemplate) Delete(key string) error {
 	if rt.ConnectionFactory == nil {
 		return errors.New("redis ConnectionFactory == nil")
 	}
-	var session, err = rt.ConnectionFactory.OpenSession()
+	session, err := rt.ConnectionFactory.OpenSession()
 	if err != nil {
 		logger.Info("redis set failed:", err)
 		return err

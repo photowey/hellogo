@@ -1,7 +1,9 @@
 package commonconstant
 
-type RequestSymbol = string
-type RequestCodeSymbol = int8
+type (
+	RequestSymbol     = string
+	RequestCodeSymbol = int8
+)
 
 const (
 	DecimalSystem        = 10 // 十进制

@@ -17,13 +17,10 @@ func (h *Handler) Run(ch chan error) {
 }
 
 func (h *Handler) ServerOnInt(ctx *fasthttp.RequestCtx) {
-
 }
 
 func (h *Handler) ServerOnExt(ctx *fasthttp.RequestCtx) {
-
 }
 
 func route(ctx *fasthttp.RequestCtx, req *Request) {
-
 }

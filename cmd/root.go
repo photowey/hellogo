@@ -16,7 +16,6 @@ var (
 		Short: "hellogo",
 		Long:  "hellogo",
 		Run: func(cmd *cobra.Command, args []string) {
-
 		},
 	}
 )

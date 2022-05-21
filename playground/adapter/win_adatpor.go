@@ -1,7 +1,7 @@
 package adapter
 
 import (
-	`fmt`
+	"fmt"
 )
 
 type WinAdapter struct {

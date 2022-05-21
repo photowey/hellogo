@@ -42,7 +42,6 @@ var logger *zap.SugaredLogger
 var _level Level = LevelInfo
 
 func New(loggerConfig config.LoggerConfig) error {
-
 	logLevels := mapLoggerLevels()
 
 	writeSyncer, err := populateLoggerWriter(loggerConfig)

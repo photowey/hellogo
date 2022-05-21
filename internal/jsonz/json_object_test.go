@@ -1,8 +1,8 @@
 package jsonz
 
 import (
-	`reflect`
-	`testing`
+	"reflect"
+	"testing"
 )
 
 func TestObject_Put(t *testing.T) {

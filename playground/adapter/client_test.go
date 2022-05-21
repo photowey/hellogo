@@ -1,7 +1,7 @@
 package adapter
 
 import (
-	`testing`
+	"testing"
 )
 
 func TestClient_InsertLightningConnectorIntoComputer(t *testing.T) {

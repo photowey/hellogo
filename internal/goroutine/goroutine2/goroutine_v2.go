@@ -2,9 +2,7 @@ package goroutine2
 
 // ---------------------------------------------------------------- var of singleton factory by init
 
-var (
-	factory Factory
-)
+var factory Factory
 
 // ---------------------------------------------------------------- init
 
@@ -20,8 +18,7 @@ type IFactory interface {
 }
 
 // Factory {@code IFactory} 工厂核心实现
-type Factory struct {
-}
+type Factory struct{}
 
 // NewFactory 创建一个
 func NewFactory() Factory {
@@ -67,7 +64,6 @@ func (actor Goroutine) Start() Goroutine {
 // Startpre 启动 一个 Goroutine, 并执行前置函数
 func (actor Goroutine) Startpre(pre func()) Goroutine {
 	actor.runAround(pre, func() {
-
 	})
 
 	return actor
@@ -76,7 +72,6 @@ func (actor Goroutine) Startpre(pre func()) Goroutine {
 // Startpost 启动 一个 Goroutine, 并执行后置函数
 func (actor Goroutine) Startpost(post func()) Goroutine {
 	actor.runAround(func() {
-
 	}, post)
 
 	return actor
@@ -93,7 +88,6 @@ func (actor Goroutine) Startaround(pre func(), post func()) Goroutine {
 // 将 run() 私有化 -> 不允许外界直接访问
 func (actor Goroutine) run() {
 	actor.runAround(func() {}, func() {
-
 	})
 }
 

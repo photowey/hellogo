@@ -1,13 +1,15 @@
 package iterator
 
 import (
-	`errors`
+	"errors"
 
-	`github.com/hellogo/internal/hashmap`
+	"github.com/hellogo/internal/hashmap"
 )
 
-var _ Iterator = (*iterator)(nil)
-var ErrIteratorClosed = errors.New("iterator channel closed")
+var (
+	_                 Iterator = (*iterator)(nil)
+	ErrIteratorClosed          = errors.New("iterator channel closed")
+)
 
 type Iterator interface {
 	Iterator() (hashmap.HashMap, error)

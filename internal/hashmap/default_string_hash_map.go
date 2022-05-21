@@ -1,7 +1,7 @@
 package hashmap
 
 import (
-	`errors`
+	"errors"
 )
 
 var _ StringHashMap = (*defaultStringHashMap)(nil)

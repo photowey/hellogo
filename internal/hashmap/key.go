@@ -1,7 +1,7 @@
 package hashmap
 
 import (
-	`fmt`
+	"fmt"
 )
 
 type HashKey interface {

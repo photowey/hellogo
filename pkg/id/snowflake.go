@@ -1,9 +1,9 @@
 package id
 
 import (
-	`errors`
-	`sync`
-	`time`
+	"errors"
+	"sync"
+	"time"
 )
 
 const (
@@ -24,7 +24,6 @@ type Snowflake struct {
 }
 
 func NewSnowflake(workerId int64) (*Snowflake, error) {
-
 	if workerId < 0 || workerId > workerIdMax {
 		return nil, errors.New("workerId must be between 0 and 1023")
 	}
@@ -37,7 +36,6 @@ func NewSnowflake(workerId int64) (*Snowflake, error) {
 }
 
 func (sf *Snowflake) Generate() int64 {
-
 	sf.Lock()
 	defer sf.Unlock()
 

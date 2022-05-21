@@ -4,9 +4,7 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-var (
-	DefaultSession = RedizSession{}
-)
+var DefaultSession = RedizSession{}
 
 // RedizSession {@code Redis} 会话
 type RedizSession struct {

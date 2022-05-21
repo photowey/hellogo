@@ -1,11 +1,10 @@
 package adapter
 
 import (
-	`fmt`
+	"fmt"
 )
 
-type Client struct {
-}
+type Client struct{}
 
 func NewClient() Client {
 	return Client{}

@@ -1,7 +1,7 @@
 package jsont
 
 import (
-	`github.com/hellogo/internal/jsonz`
+	"github.com/hellogo/internal/jsonz"
 )
 
 // ---------------------------------------------------------------- JSON

@@ -1,11 +1,10 @@
 package adapter
 
 import (
-	`fmt`
+	"fmt"
 )
 
-type Mac struct {
-}
+type Mac struct{}
 
 func NewMac() *Mac {
 	return &Mac{}

@@ -1,8 +1,8 @@
 package mutexz
 
 import (
-	`log`
-	`time`
+	"log"
+	"time"
 )
 
 func Walk() {

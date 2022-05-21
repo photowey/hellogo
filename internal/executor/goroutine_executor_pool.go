@@ -1,8 +1,8 @@
 package executor
 
 import (
-	`context`
-	`errors`
+	"context"
+	"errors"
 )
 
 var _ GoroutineExecutor = (*GoroutineExecutorPool)(nil)

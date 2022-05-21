@@ -3,7 +3,6 @@ package sort
 import "testing"
 
 func TestSort(t *testing.T) {
-
 	type Student struct {
 		Id    int64
 		Name  string
@@ -21,22 +20,22 @@ func TestSort(t *testing.T) {
 	}
 
 	students := []Student{
-		Student{
+		{
 			Id:    9527,
 			Name:  "Lilei",
 			Score: 98.76,
 		},
-		Student{
+		{
 			Id:    8848,
 			Name:  "Hanmeimei",
 			Score: 88.76,
 		},
-		Student{
+		{
 			Id:    7923,
 			Name:  "Tom",
 			Score: 78.76,
 		},
-		Student{
+		{
 			Id:    6379,
 			Name:  "Jerry",
 			Score: 68.76,

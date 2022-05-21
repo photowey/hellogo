@@ -1,13 +1,11 @@
 package concurrenthashmap
 
 import (
-	`errors`
-	`sync`
+	"errors"
+	"sync"
 )
 
-var (
-	_ ConcurrentHashMap = (*concurrentHashMap)(nil)
-)
+var _ ConcurrentHashMap = (*concurrentHashMap)(nil)
 
 type partition []*kernelMap
 
