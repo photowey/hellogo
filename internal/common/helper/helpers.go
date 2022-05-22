@@ -149,3 +149,14 @@ func IsEmptyCollection(target []any) bool {
 func IsNotEmptyCollection(target []any) bool {
 	return !IsEmptyCollection(target)
 }
+
+func javaByteToGoByte(r rune) byte {
+	if r < -128 || r > 127 {
+		panic("out of range")
+	}
+	if r < 0 {
+		return byte(256 + r)
+	}
+
+	return byte(r)
+}
