@@ -1,4 +1,4 @@
-package crypto
+package rsaz
 
 const (
 	PKCS8PrivateKey = `-----BEGIN PRIVATE KEY-----

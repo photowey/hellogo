@@ -1,4 +1,4 @@
-package crypto
+package rsaz
 
 const (
 	PKCS1PublicKey = `-----BEGIN RSA PUBLIC KEY-----

@@ -1,4 +1,4 @@
-package crypto
+package rsaz
 
 import (
 	"crypto/rsa"
