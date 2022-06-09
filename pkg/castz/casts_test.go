@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/hellogo/internal/jsonz"
 )
 
 func TestToBoolB(t *testing.T) {
@@ -555,3 +557,40 @@ func TestToUIntB(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkJSONUnmarshal(b *testing.B) {
+	book := &Book{}
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			_ = jsonz.UnmarshalStruct([]byte(jsonData), book)
+		}
+	})
+}
+
+func BenchmarkMap(b *testing.B) {
+	maps, _ := jsonz.UnmarshalMap([]byte(jsonData))
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			id, _ := ToInt64B(maps["id"])
+			_ = &Book{
+				Id:    id,
+				Name:  maps["name"],
+				Press: maps["press"],
+			}
+		}
+	})
+}
+
+type Book struct {
+	Id    int64  `json:"id"`
+	Name  string `json:"name"`
+	Press string `json:"press"`
+}
+
+var jsonData = `{
+  "id": 9787111558422,
+  "name": "The Go Programming Language",
+  "press": "Pearson Education"
+}`

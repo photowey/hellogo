@@ -36,3 +36,12 @@ func UnmarshalStruct(data []byte, structy any) error {
 
 	return nil
 }
+
+func UnmarshalMap(data []byte) (map[string]string, error) {
+	maps := make(map[string]string)
+	if err := json.Unmarshal(data, &maps); err != nil {
+		return maps, err
+	}
+
+	return maps, nil
+}
