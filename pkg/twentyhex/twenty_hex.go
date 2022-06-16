@@ -49,8 +49,11 @@ func (ttyHex twentyHex) ToTwentyHex(decimal int) string {
 
 func (ttyHex twentyHex) ToInt(twentyHex string) int {
 	decimal := 0
-	if strings.TrimSpace(twentyHex) == EmptyString && twentyHex == Symbol {
+	if strings.TrimSpace(twentyHex) == EmptyString || twentyHex == Symbol {
 		return decimal
+	}
+	if !MustTwentyHexAlphabet(twentyHex) {
+		return -1
 	}
 	twentyHex = strings.ReplaceAll(twentyHex, Symbol, EmptyString)
 	length := len(twentyHex)
@@ -64,12 +67,18 @@ func (ttyHex twentyHex) ToInt(twentyHex string) int {
 }
 
 func (ttyHex twentyHex) ToNext(twentyHex string) string {
+	if strings.TrimSpace(twentyHex) == EmptyString || !MustTwentyHex(twentyHex) {
+		return EmptyString
+	}
 	idx := ttyHex.ToInt(twentyHex)
 
 	return ttyHex.ToTwentyHex(idx + 1)
 }
 
 func (ttyHex twentyHex) ToNextAlphabet(twentyHex string) string {
+	if strings.TrimSpace(twentyHex) == EmptyString || !MustTwentyHex(twentyHex) {
+		return EmptyString
+	}
 	next := ttyHex.ToNext(twentyHex)
 
 	return ttyHex.ToAlphabet(next)
@@ -87,7 +96,7 @@ func (ttyHex twentyHex) ToIndex(twentyHex string) int {
 }
 
 func (ttyHex twentyHex) ToAlphabet(twentyHex string) string {
-	if strings.TrimSpace(twentyHex) == EmptyString && twentyHex == Symbol {
+	if strings.TrimSpace(twentyHex) == EmptyString || !MustTwentyHex(twentyHex) {
 		return EmptyString
 	}
 	twentyHex = strings.ReplaceAll(twentyHex, Symbol, EmptyString)
@@ -111,8 +120,7 @@ func (ttyHex twentyHex) ToAlphabet(twentyHex string) string {
 }
 
 func (ttyHex twentyHex) ToAlphabetIndex(alphabet string) int {
-	// TODO 正则
-	if strings.TrimSpace(alphabet) == EmptyString {
+	if strings.TrimSpace(alphabet) == EmptyString || !MustAlphabet(alphabet) {
 		return -1
 	}
 
@@ -127,9 +135,12 @@ func (ttyHex twentyHex) ToAlphabetIndex(alphabet string) int {
 }
 
 func (ttyHex twentyHex) FromAlphabet(alphabet string) string {
+	if strings.TrimSpace(alphabet) == EmptyString || !MustAlphabet(alphabet) {
+		return EmptyString
+	}
 	length := len(alphabet)
 
-	twentyHexx := ""
+	twentyHexx := EmptyString
 	for i, next := range alphabet {
 		index := ttyHex.ToAlphabetIndex(string(next))
 		if i != (length-1) && index < len(SystemAlphabet)-1 {
