@@ -177,12 +177,20 @@ func Logger() *zap.SugaredLogger {
 
 func Debug(message string, args ...any) {
 	if LoggerEnabled() {
+		if len(args) == 0 {
+			logger.Debug(message)
+			return
+		}
 		logger.Debugf(message, args)
 	}
 }
 
 func Info(message string, args ...any) {
 	if LoggerEnabled() {
+		if len(args) == 0 {
+			logger.Info(message)
+			return
+		}
 		logger.Infof(message, args)
 	}
 }
@@ -195,6 +203,10 @@ func Infow(message string, keysAndValues ...any) {
 
 func Warn(message string, args ...any) {
 	if LoggerEnabled() {
+		if len(args) == 0 {
+			logger.Info(message)
+			return
+		}
 		logger.Warnf(message, args)
 	}
 }
@@ -207,6 +219,10 @@ func Warnw(message string, keysAndValues ...any) {
 
 func Error(message string, args ...any) {
 	if LoggerEnabled() {
+		if len(args) == 0 {
+			logger.Error(message)
+			return
+		}
 		logger.Errorf(message, args)
 	}
 }
@@ -219,12 +235,20 @@ func Errorw(message string, keysAndValues ...any) {
 
 func Fatal(message string, args ...any) {
 	if LoggerEnabled() {
+		if len(args) == 0 {
+			logger.Fatal(message)
+			return
+		}
 		logger.Fatalf(message, args)
 	}
 }
 
 func Panic(message string, args ...any) {
 	if LoggerEnabled() {
+		if len(args) == 0 {
+			logger.Panic(message)
+			return
+		}
 		logger.Panicf(message, args)
 	}
 }
