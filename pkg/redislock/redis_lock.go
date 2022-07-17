@@ -7,6 +7,8 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
+// @see https://blog.csdn.net/fwhezfwhez/article/details/123323506
+
 type RedisLock struct {
 	key           string
 	maxLockSecond int           // 锁定状态标记的最大时间
@@ -14,7 +16,7 @@ type RedisLock struct {
 	retryInterval time.Duration // 重试的间隔
 }
 
-func NewRedisRWMutex(key string, maxLockSecond int, maxRetryTimes int, retryInterval time.Duration) *RedisLock {
+func NewRedisLock(key string, maxLockSecond int, maxRetryTimes int, retryInterval time.Duration) *RedisLock {
 	return &RedisLock{
 		key:           key,
 		maxLockSecond: maxLockSecond,
@@ -26,10 +28,10 @@ func NewRedisRWMutex(key string, maxLockSecond int, maxRetryTimes int, retryInte
 func (lock *RedisLock) RLock(conn redis.Conn) (int, error) {
 	maxRetry := lock.maxRetryTimes
 
-	rs, e := lock.rlock(&maxRetry, conn)
+	rs, err := lock.rlock(&maxRetry, conn)
 
-	if e != nil {
-		return 0, errorx.Wrap(e)
+	if err != nil {
+		return 0, errorx.Wrap(err)
 	}
 
 	return rs, nil
@@ -62,9 +64,9 @@ if tonumber(stat) == 1 then
 end
 return 4;
 `
-	vint, e := redis.Int(conn.Do("eval", script, 1, lock.key, lock.maxLockSecond))
-	if e != nil {
-		return 0, errorx.Wrap(e)
+	vint, err := redis.Int(conn.Do("eval", script, 1, lock.key, lock.maxLockSecond))
+	if err != nil {
+		return 0, errorx.Wrap(err)
 	}
 
 	// 可执行
@@ -93,9 +95,9 @@ func (lock *RedisLock) RUnLock(conn redis.Conn) {
 func (lock RedisLock) Lock(conn redis.Conn) (int, error) {
 	var max = lock.maxRetryTimes
 
-	rs, e := lock.lock(&max, conn)
-	if e != nil {
-		return 0, errorx.Wrap(e)
+	rs, err := lock.lock(&max, conn)
+	if err != nil {
+		return 0, errorx.Wrap(err)
 	}
 
 	return rs, nil
@@ -128,9 +130,9 @@ if math.abs(tonumber(stat) - 1) < 0.1 then
 end
 return 4;
 `
-	vint, e := redis.Int(conn.Do("eval", script, 1, lock.key, lock.maxLockSecond))
-	if e != nil {
-		return 0, errorx.Wrap(e)
+	vint, err := redis.Int(conn.Do("eval", script, 1, lock.key, lock.maxLockSecond))
+	if err != nil {
+		return 0, errorx.Wrap(err)
 	}
 
 	// 可执行
