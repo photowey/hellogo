@@ -5,6 +5,8 @@ go 1.18
 require (
 	entgo.io/ent v0.10.1
 	github.com/BurntSushi/toml v1.1.0
+	github.com/fwhezfwhez/errorx v1.1.0
+	github.com/garyburd/redigo v1.6.3
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gomodule/redigo v1.8.8
 	github.com/gookit/color v1.5.0
@@ -30,6 +32,7 @@ require (
 	github.com/go-logr/logr v1.2.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-openapi/inflect v0.19.0 // indirect
+	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.7 // indirect
 	github.com/google/uuid v1.3.0 // indirect
