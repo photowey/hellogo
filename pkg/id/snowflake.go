@@ -35,18 +35,18 @@ func NewSnowflake(workerId int64) (*Snowflake, error) {
 	}, nil
 }
 
-func (sf *Snowflake) Generate() int64 {
+func (sf *Snowflake) NextId() int64 {
 	sf.Lock()
 	defer sf.Unlock()
 
-	now := time.Now().UnixNano() / 1000000
+	now := time.Now().UnixNano() / 1e6
 
 	if sf.timestamp == now {
 		sf.sequence = (sf.sequence + 1) & sequenceMask
 
 		if sf.sequence == 0 {
 			for now <= sf.timestamp {
-				now = time.Now().UnixNano() / 1000000
+				now = time.Now().UnixNano() / 1e6
 			}
 		}
 	} else {
@@ -55,7 +55,7 @@ func (sf *Snowflake) Generate() int64 {
 
 	sf.timestamp = now
 
-	nextId := int64((now-twepoch)<<timestampShift | (sf.workerId << workerIdShift) | (sf.sequence))
+	nextId := (now-twepoch)<<timestampShift | (sf.workerId << workerIdShift) | (sf.sequence)
 
 	return nextId
 }
