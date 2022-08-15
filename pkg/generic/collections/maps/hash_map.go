@@ -8,21 +8,21 @@ type HashMap[K comparable, V any] struct {
 	ctx map[K]V
 }
 
-func (hm HashMap[K, V]) Size() int {
+func (hm *HashMap[K, V]) Size() int {
 	return len(hm.ctx)
 }
 
-func (hm HashMap[K, V]) IsEmpty() bool {
+func (hm *HashMap[K, V]) IsEmpty() bool {
 	return hm.Size() == 0
 }
 
-func (hm HashMap[K, V]) ContainsKey(k K) bool {
+func (hm *HashMap[K, V]) ContainsKey(k K) bool {
 	_, ok := hm.ctx[k]
 
 	return ok
 }
 
-func (hm HashMap[K, V]) ContainsValue(v V) bool {
+func (hm *HashMap[K, V]) ContainsValue(v V) bool {
 	for _, hv := range hm.ctx {
 		if reflect.DeepEqual(hv, v) {
 			return true
@@ -32,7 +32,7 @@ func (hm HashMap[K, V]) ContainsValue(v V) bool {
 	return false
 }
 
-func (hm HashMap[K, V]) Get(k K) (V, bool) {
+func (hm *HashMap[K, V]) Get(k K) (V, bool) {
 	v, ok := hm.ctx[k]
 
 	return v, ok
@@ -66,7 +66,7 @@ func (hm *HashMap[K, V]) Clear() {
 	hm.ctx = m
 }
 
-func (hm HashMap[K, V]) KeySet() []K {
+func (hm *HashMap[K, V]) KeySet() []K {
 	keys := make([]K, hm.Size())
 	for k := range hm.ctx {
 		keys = append(keys, k)
@@ -75,7 +75,7 @@ func (hm HashMap[K, V]) KeySet() []K {
 	return keys
 }
 
-func (hm HashMap[K, V]) Values() []V {
+func (hm *HashMap[K, V]) Values() []V {
 	values := make([]V, hm.Size())
 	for _, v := range hm.ctx {
 		values = append(values, v)
