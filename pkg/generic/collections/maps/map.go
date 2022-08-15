@@ -1,6 +1,6 @@
 package maps
 
-type Map[K comparable, V comparable] interface {
+type Map[K comparable, V any] interface {
 	Size() int
 	IsEmpty() bool
 	ContainsKey(k K) bool

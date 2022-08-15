@@ -21,9 +21,7 @@ const (
 	StackBufSize           = 1 << 6
 )
 
-var (
-	ErrFull = errors.New("fanout: buffer queue fulled")
-)
+var ErrFull = errors.New("fanout: buffer queue fulled")
 
 type Option func(*options)
 

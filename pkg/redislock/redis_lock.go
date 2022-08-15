@@ -29,7 +29,6 @@ func (lock *RedisLock) RLock(conn redis.Conn) (int, error) {
 	maxRetry := lock.maxRetryTimes
 
 	rs, err := lock.rlock(&maxRetry, conn)
-
 	if err != nil {
 		return 0, errorx.Wrap(err)
 	}
@@ -46,7 +45,7 @@ func (lock *RedisLock) rlock(retryTimes *int, conn redis.Conn) (int, error) {
 		--- 返回2表示可执行
 		--- 返回3表示需要阻塞
 	*/
-	var script = `
+	script := `
 local stat = redis.call('GET', KEYS[1]);
 if not stat then
     redis.call('SETEX', KEYS[1], ARGV[1], 1)
@@ -93,7 +92,7 @@ func (lock *RedisLock) RUnLock(conn redis.Conn) {
 }
 
 func (lock RedisLock) Lock(conn redis.Conn) (int, error) {
-	var max = lock.maxRetryTimes
+	max := lock.maxRetryTimes
 
 	rs, err := lock.lock(&max, conn)
 	if err != nil {
@@ -112,7 +111,7 @@ func (lock *RedisLock) lock(retryTimes *int, conn redis.Conn) (int, error) {
 	   --- 返回 3表示需要阻塞
 	   --- 返回 2表示可执行
 	*/
-	var script = `
+	script := `
 local stat = redis.call('GET', KEYS[1]);
 if not stat then
     redis.call('SETEX', KEYS[1], ARGV[1], 2)

@@ -1,6 +1,10 @@
 package maps
 
-type HashMap[K comparable, V comparable] struct {
+import (
+	"reflect"
+)
+
+type HashMap[K comparable, V any] struct {
 	ctx map[K]V
 }
 
@@ -20,7 +24,7 @@ func (hm HashMap[K, V]) ContainsKey(k K) bool {
 
 func (hm HashMap[K, V]) ContainsValue(v V) bool {
 	for _, hv := range hm.ctx {
-		if hv == v {
+		if reflect.DeepEqual(hv, v) {
 			return true
 		}
 	}

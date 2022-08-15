@@ -13,14 +13,12 @@ import (
 
 // ---------------------------------------------------------------- Contains
 
-var (
-	syncPool = sync.Pool{
-		New: func() interface{} {
-			buf := make([]byte, 0)
-			return bytes.NewBuffer(buf)
-		},
-	}
-)
+var syncPool = sync.Pool{
+	New: func() interface{} {
+		buf := make([]byte, 0)
+		return bytes.NewBuffer(buf)
+	},
+}
 
 func ArrayContains(haystack []string, needle string) (index int) {
 	index = -1

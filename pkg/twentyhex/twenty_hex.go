@@ -19,8 +19,7 @@ type TwentyHex interface {
 	FromAlphabet(alphabet string) string
 }
 
-type twentyHex struct {
-}
+type twentyHex struct{}
 
 func (ttyHex twentyHex) ToTwentyHex(decimal int) string {
 	if decimal < 0 {

@@ -1,4 +1,3 @@
 package lists
 
-type ArrayList[T comparable] struct {
-}
+type ArrayList[T comparable] struct{}

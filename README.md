@@ -1,2 +1,2 @@
 # hellogo
-the study project for go lang
+the action project In golang
