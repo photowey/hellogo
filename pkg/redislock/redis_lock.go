@@ -45,24 +45,7 @@ func (lock *RedisLock) rlock(retryTimes *int, conn redis.Conn) (int, error) {
 		--- 返回2表示可执行
 		--- 返回3表示需要阻塞
 	*/
-	script := `
-local stat = redis.call('GET', KEYS[1]);
-if not stat then
-    redis.call('SETEX', KEYS[1], ARGV[1], 1)
-    return 2;
-end
-if tonumber(stat) == 0 then
-    redis.call('SETEX', KEYS[1], ARGV[1], 1)
-    return 2;
-end
-if tonumber(stat) == 2 then
-    return 3;
-end
-if tonumber(stat) == 1 then
-    return 2;
-end
-return 4;
-`
+	script := readLockLua
 	vint, err := redis.Int(conn.Do("eval", script, 1, lock.key, lock.maxLockSecond))
 	if err != nil {
 		return 0, errorx.Wrap(err)
@@ -111,24 +94,7 @@ func (lock *RedisLock) lock(retryTimes *int, conn redis.Conn) (int, error) {
 	   --- 返回 3表示需要阻塞
 	   --- 返回 2表示可执行
 	*/
-	script := `
-local stat = redis.call('GET', KEYS[1]);
-if not stat then
-    redis.call('SETEX', KEYS[1], ARGV[1], 2)
-    return 2;
-end
-if math.abs(tonumber(stat)) < 0.1 then
-    redis.call('SETEX', KEYS[1], ARGV[1], 2)
-    return 2;
-end
-if math.abs(tonumber(stat) - 2) < 0.1 then
-    return 3;
-end
-if math.abs(tonumber(stat) - 1) < 0.1 then
-    return 3;
-end
-return 4;
-`
+	script := lockLua
 	vint, err := redis.Int(conn.Do("eval", script, 1, lock.key, lock.maxLockSecond))
 	if err != nil {
 		return 0, errorx.Wrap(err)
