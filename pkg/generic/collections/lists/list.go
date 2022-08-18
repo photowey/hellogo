@@ -5,6 +5,8 @@ import (
 	"github.com/hellogo/pkg/generic/functions"
 )
 
+var _ collections.Collection[any] = (List[any])(nil)
+
 type List[T comparable] interface {
 	collections.Collection[T]
 	Sort(cpt functions.Comparator[T])

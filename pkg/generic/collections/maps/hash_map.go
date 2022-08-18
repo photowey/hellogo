@@ -4,6 +4,8 @@ import (
 	"reflect"
 )
 
+var _ Map[any, any] = (*HashMap[any, any])(nil)
+
 type HashMap[K comparable, V any] struct {
 	ctx map[K]V
 }
