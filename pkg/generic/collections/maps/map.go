@@ -12,4 +12,6 @@ type Map[K comparable, V any] interface {
 	Clear()
 	KeySet() []K
 	Values() []V
+	ForEachR(fx func(K, V))
+	ForEachW(fx func(K, V))
 }
