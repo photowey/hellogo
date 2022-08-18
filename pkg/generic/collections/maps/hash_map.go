@@ -67,7 +67,7 @@ func (hm *HashMap[K, V]) Clear() {
 }
 
 func (hm *HashMap[K, V]) KeySet() []K {
-	keys := make([]K, hm.Size())
+	keys := make([]K, 0)
 	for k := range hm.ctx {
 		keys = append(keys, k)
 	}
@@ -76,7 +76,7 @@ func (hm *HashMap[K, V]) KeySet() []K {
 }
 
 func (hm *HashMap[K, V]) Values() []V {
-	values := make([]V, hm.Size())
+	values := make([]V, 0)
 	for _, v := range hm.ctx {
 		values = append(values, v)
 	}
