@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/hellogo/colorz"
+	App "github.com/hellogo/cmd"
 )
 
 func main() {
-	colorz.Run()
-	// App.Run()
+	// colorz.Run()
+	App.Run()
 }
