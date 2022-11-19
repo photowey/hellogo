@@ -300,6 +300,27 @@ func Test_twentyHex_ToTwentyHex(t *testing.T) {
 			},
 			want: "0y1P",
 		},
+		{
+			name: "Test ToTwentyHex-4",
+			args: args{
+				decimal: 15123077923,
+			},
+			want: "0y1MOLL315",
+		},
+		{
+			name: "Test ToTwentyHex-5",
+			args: args{
+				decimal: 10860143,
+			},
+			want: "0yNJN7L",
+		},
+		{
+			name: "Test ToTwentyHex-6",
+			args: args{
+				decimal: 143, // 0x8F 0217 10001111
+			},
+			want: "0y5D",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
