@@ -5,14 +5,13 @@ import (
 )
 
 const (
-	Byte = 1
-	K    = 1024
-	KB   = K * Byte
-	MB   = K * KB
-	GB   = K * MB
-	TB   = K * GB
-	PB   = K * TB
-	EB   = K * PB
+	Byte = 1 << (10 * iota)
+	KB
+	MB
+	GB
+	TB
+	PB
+	EB
 )
 
 func Format(bytes uint64) string {
