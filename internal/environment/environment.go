@@ -15,17 +15,17 @@ type PropertySource struct {
 	FilePath string
 	Name     string
 	Type     reflect.Type
-	Map      map[string]any
+	Map      AnyMap
 }
 
 type Environment struct {
-	configMap       map[string]any
+	configMap       AnyMap
 	propertySources []PropertySource
 }
 
 func NewEnvironment(propertySources ...PropertySource) *Environment {
 	return &Environment{
-		configMap:       make(map[string]any),
+		configMap:       make(AnyMap),
 		propertySources: propertySources,
 	}
 }
@@ -57,7 +57,7 @@ func (e *Environment) LoadConfig(path, name string, _ reflect.Type) error {
 		return err
 	}
 
-	var configMap map[string]any
+	var configMap AnyMap
 	switch ext {
 	case ".yaml", ".yml":
 		err = yaml.Unmarshal(data, &configMap)
@@ -72,12 +72,12 @@ func (e *Environment) LoadConfig(path, name string, _ reflect.Type) error {
 	}
 
 	cm := convertAnyMap(configMap)
-	e.mergeMap(cm.(map[string]any))
+	e.mergeMap(cm.(AnyMap))
 
 	return nil
 }
 
-func (e *Environment) LoadMap(configMap map[string]any) {
+func (e *Environment) LoadMap(configMap AnyMap) {
 	e.mergeMap(configMap)
 }
 
@@ -97,7 +97,7 @@ func (e *Environment) LoadConfigSources() error {
 	return nil
 }
 
-func (e *Environment) LoadMapSource(sourceMap map[string]any) {
+func (e *Environment) LoadMapSource(sourceMap AnyMap) {
 	e.LoadMap(sourceMap)
 }
 
@@ -127,12 +127,12 @@ func (e *Environment) SetProperty(key string, value any) {
 	e.setProperty(key, value)
 }
 
-func (e *Environment) mergeMap(sourceMap map[string]any) {
+func (e *Environment) mergeMap(sourceMap AnyMap) {
 	for key, value := range sourceMap {
 		if existing, ok := e.configMap[key]; ok {
-			if existingMap, ok1 := existing.(map[string]any); ok1 {
-				if newMap, ok2 := value.(map[string]any); ok2 {
-					mergedMap := make(map[string]any)
+			if existingMap, ok1 := existing.(AnyMap); ok1 {
+				if newMap, ok2 := value.(AnyMap); ok2 {
+					mergedMap := make(AnyMap)
 					for k, v := range existingMap {
 						mergedMap[k] = v
 					}
@@ -148,13 +148,13 @@ func (e *Environment) mergeMap(sourceMap map[string]any) {
 	}
 }
 
-func (e *Environment) mergeMaps(target map[string]any, source map[string]any) {
+func (e *Environment) mergeMaps(target AnyMap, source AnyMap) {
 	for key, sourceValue := range source {
 		targetValue, exists := target[key]
 
 		if exists {
 			if isMap(targetValue) && isMap(sourceValue) {
-				e.mergeMaps(targetValue.(map[string]any), sourceValue.(map[string]any))
+				e.mergeMaps(targetValue.(AnyMap), sourceValue.(AnyMap))
 			} else {
 				target[key] = sourceValue
 			}
@@ -175,11 +175,11 @@ func (e *Environment) getProperty(key string) any {
 		}
 
 		if v, ok := value.(map[any]any); ok {
-			current = convertAnyMap(v).(map[string]any)
+			current = convertAnyMap(v).(AnyMap)
 			continue
 		}
 
-		if current, ok = value.(map[string]any); !ok {
+		if current, ok = value.(AnyMap); !ok {
 			if idx == len(keys)-1 {
 				return value
 			}
@@ -196,11 +196,11 @@ func (e *Environment) setProperty(key string, value any) {
 	for _, k := range keys[:len(keys)-1] {
 		val, ok := current[k]
 		if !ok {
-			newMap := make(map[string]any)
+			newMap := make(AnyMap)
 			current[k] = newMap
 			current = newMap
 		} else {
-			current = val.(map[string]any)
+			current = val.(AnyMap)
 		}
 	}
 	current[lastKey] = value
@@ -209,7 +209,7 @@ func (e *Environment) setProperty(key string, value any) {
 func convertAnyMap(source any) any {
 	switch v := source.(type) {
 	case map[any]any:
-		result := make(map[string]any)
+		result := make(AnyMap)
 		for key, value := range v {
 			result[fmt.Sprintf("%v", key)] = convertAnyMap(value)
 		}
@@ -222,17 +222,17 @@ func convertAnyMap(source any) any {
 	return source
 }
 
-func convertIntsToInt64InMap(inputMap map[string]any) map[string]any {
-	ctx := make(map[string]any)
+func convertIntsToInt64InMap(inputMap AnyMap) AnyMap {
+	ctx := make(AnyMap)
 
 	for key, val := range inputMap {
 		strKey := fmt.Sprintf("%v", key)
 
 		switch v := val.(type) {
-		case map[string]any:
+		case AnyMap:
 			ctx[strKey] = convertIntsToInt64InMap(v)
 		case map[any]any:
-			tmpMap := convertAnyMap(v).(map[string]any)
+			tmpMap := convertAnyMap(v).(AnyMap)
 			ctx[strKey] = convertIntsToInt64InMap(tmpMap)
 		case []any:
 			ctx[strKey] = convertIntsToInt64InSlice(v)
@@ -251,10 +251,10 @@ func convertIntsToInt64InSlice(inputSlice []any) []any {
 
 	for i, val := range inputSlice {
 		switch v := val.(type) {
-		case map[string]any:
+		case AnyMap:
 			result[i] = convertIntsToInt64InMap(v)
 		case map[any]any:
-			tmpMap := convertAnyMap(v).(map[string]any)
+			tmpMap := convertAnyMap(v).(AnyMap)
 			result[i] = convertIntsToInt64InMap(tmpMap)
 		case []any:
 			result[i] = convertIntsToInt64InSlice(v)
@@ -269,6 +269,6 @@ func convertIntsToInt64InSlice(inputSlice []any) []any {
 }
 
 func isMap(value any) bool {
-	_, ok := value.(map[string]any)
+	_, ok := value.(AnyMap)
 	return ok
 }

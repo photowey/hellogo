@@ -68,16 +68,16 @@ database:
 	err = os.WriteFile(tomlConfigFile, []byte(tomlConfigContent), os.ModePerm)
 	assert.NoError(t, err)
 
-	mapConfig := map[string]any{
-		"mapapp": map[string]any{
+	mapConfig := AnyMap{
+		"mapapp": AnyMap{
 			"name":    "MapApp",
 			"version": 6.0,
-			"details": map[string]any{
+			"details": AnyMap{
 				"enabled":     true,
 				"description": "Map application description",
 			},
 		},
-		"mapdatabase": map[string]any{
+		"mapdatabase": AnyMap{
 			"host":     "maphost",
 			"port":     5436,
 			"username": "mapuser",
@@ -89,7 +89,7 @@ database:
 	err = env.StartWithSources(
 		PropertySource{FilePath: testConfigDir, Name: "test_yaml_config.yaml"},
 		PropertySource{FilePath: testConfigDir, Name: "test_toml_config.toml"},
-		PropertySource{Type: reflect.TypeOf(map[string]any{}), Map: mapConfig},
+		PropertySource{Type: reflect.TypeOf(AnyMap{}), Map: mapConfig},
 	)
 	assert.NoError(t, err)
 
