@@ -3,7 +3,7 @@ package stdin
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"strings"
 
@@ -14,7 +14,7 @@ func Run() {
 	flag.Parse()
 	data := flag.Args()
 	if !terminal.IsTerminal(0) {
-		b, err := ioutil.ReadAll(os.Stdin)
+		b, err := io.ReadAll(os.Stdin)
 		if err == nil {
 			data = append(data, string(b))
 		}

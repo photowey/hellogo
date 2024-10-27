@@ -36,6 +36,9 @@ func (e *Environment) LoadSystemEnvVars() {
 		pair := strings.SplitN(env, "=", 2)
 		if len(pair) == 2 {
 			envVars[pair[0]] = pair[1]
+			if strings.HasPrefix(pair[1], "::") {
+				envVars[pair[0]] = pair[1]
+			}
 		}
 	}
 
